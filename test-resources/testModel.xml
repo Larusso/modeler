@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE model SYSTEM "generator.dtd">
+<model>
+	<iface type="ISimpleInterface">
+		<property type="string" name="name"/>
+	</iface>
+
+	<class type="SimpleClass">
+		<property name="name" type="string"/>
+	</class>
+
+	<iface type="IBaseClass"/>
+
+	<class type="BaseClass">
+		<extends type="SimpleClass"/>
+		<implements iface="IBaseClass"/>
+
+		<property type="de.example.IClassType" name="type"/>
+		<property type="collection" name="list"/>
+
+		<method name="getName" returns="string"/>
+		<method name="getType" returns="de.example.IClassType"/>
+
+		<method name="combine" returns="IBaseTestClass">
+			<param name="first" type="IBaseTestClass"/>
+			<param name="second" type="IBaseTestClass"/>
+		</method>
+	</class>
+
+	<iface type="IExtendedClass">
+		<method name="copy" returns="void"/>
+	</iface>
+
+	<class type="ExtendedClass">
+		<extends type="BaseClass"/>
+		<implements iface="ISimpleInterface"/>
+		<implements iface="IExtendedClass"/>
+		<property name="power" type="string"/>
+	</class>
+
+	<class type="ExtendedClass2">
+		<implements iface="IExtendedClass"/>
+		<method name="copy" returns="void"/>
+	</class>
+
+	<iface type="IMultiInheritance">
+		<extends type="ISimpleInterface"/>
+		<extends type="IExtendedClass"/>
+	</iface>
+
+	<class type="ExtendsLibraryClass">
+		<extends type="mx.collections.ArrayCollection"/>
+		<property type="string" name="name"/>
+	</class>
+</model>

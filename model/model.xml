@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE model SYSTEM "generator.dtd">
+<model>
+	<iface type="de.tslarusso.interfaces.IServerProfileInfo">
+		<property type="int" name="profileId"/>
+		<property type="string" name="name"/>
+		<property type="com.domain.Sex" name="sex"/>
+		<property type="long" name="birthday"/>
+		<property type="string" name="city"/>
+		<property type="string" name="firstName"/>
+		<property type="string" name="lastName"/>
+		<property type="string" name="password"/>
+		<property type="de.tslarusso.CustomerStatus" name="customerStatus"/>
+		<property type="string" name="email"/>
+		<property type="objectlong" name="emailver"/>
+		<property type="boolean" name="emailBounceStatus"/>
+		<property type="string" name="newEmail"/>
+		<property type="boolean" name="newEmailBounceStatus"/>
+		<property type="string" name="cafftag"/>
+		<property type="uint" name="domainId"/>
+		<property type="string" name="locale"/>
+		<property type="boolean" name="newsletterEnabled"/>
+		<property type="set(integer)" name="roleIds"/>
+		<property type="int" name="styleSlotCount" bindable="true"/>
+		<property type="int" name="sessionCount" bindable="true"/>
+	</iface>
+
+	<class type="de.tslarusso.model.ServerProfileInfo">
+		<extends type="de.tslarusso.model.ServerProfileInfo2"/>
+		<implements iface="de.tslarusso.interfaces.IServerProfileInfo"/>
+		<property type="int" name="profileId"/>
+		<property type="string" name="name"/>
+		<property type="com.domain.Sex" name="sex"/>
+		<property type="long" name="birthday"/>
+		<method name="copy" returns="void">
+			<param name="param1" type="de.tslarusso.interfaces.IServerProfileInfo"/>
+			<param name="param2" type="de.tslarusso.interfaces.IServerProfileInfo"/>
+		</method>
+	</class>
+
+	<class type="de.tslarusso.model.ServerProfileInfo2">
+		<implements iface="de.tslarusso.interfaces.IServerProfileInfo"/>
+	</class>
+</model>

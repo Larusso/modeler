@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!ELEMENT types (type)*>
+
+<!ELEMENT type (target)*>
+<!ATTLIST type
+    name CDATA #REQUIRED
+>
+
+<!ELEMENT target EMPTY>
+<!ATTLIST target
+    lang CDATA #REQUIRED
+    value CDATA #REQUIRED
+    import CDATA #IMPLIED
+>

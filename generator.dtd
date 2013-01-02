@@ -1,0 +1,179 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+		<!--
+		 Language attribute indicating to which language an element declaration is confinied.
+		 To configure an element for all languages just leave the attribute out.
+		 This attribute is applicable to virtually all elements.
+		 -->
+		<!ENTITY % lang "lang (as3|java) #IMPLIED">
+
+		<!ELEMENT model (class|iface|enum|formGroup|message|include|service)*>
+
+		<!ELEMENT iface (property|method|extends)*>
+		<!ATTLIST iface
+				%lang;
+				type     CDATA        #IMPLIED
+				protobuf (true|false) "false"
+				zip      (true|false) "false">
+
+		<!ELEMENT property (doc|constraint|anotate)*>
+		<!ATTLIST property
+				default CDATA #IMPLIED
+				transient CDATA #IMPLIED
+				transientEnforceLegacyInLang CDATA #IMPLIED
+				configurableIgnoreInApply CDATA #IMPLIED
+				name CDATA #IMPLIED
+				type CDATA #IMPLIED
+				bindable CDATA #IMPLIED
+				bindableDispatchesPropertyChangedEvent CDATA #IMPLIED
+				hideInspector CDATA #IMPLIED
+				readOnlyInspector CDATA #IMPLIED
+				includeInspector CDATA #IMPLIED
+				inspectorProperties CDATA #IMPLIED
+				configurable CDATA #IMPLIED
+				configurableList CDATA #IMPLIED
+				weakConfig CDATA #IMPLIED
+				propertyEditor CDATA #IMPLIED
+				collectionItemEditor CDATA #IMPLIED
+				ignoreInTypeDecl CDATA #IMPLIED
+				keyProperty (true|false) "false"
+				equalsIgnoreCase (true|false) "false"
+				toString (true|false) "false"
+				accessorPrefix (get|is) "get"
+				protobufTag CDATA #IMPLIED
+				decorates CDATA #IMPLIED>
+
+		<!ELEMENT extends EMPTY>
+		<!ATTLIST extends
+				type CDATA #IMPLIED>
+		<!--
+			keyProperty - indicates if the property is to be included in equals() and hashCode()
+			equalsIgnoreCase - indicates if the string property is to be compared ignoring case in equals() and converted to lower case in hashCode()
+			toString - indicates if the property is to be included in toString()
+		-->
+
+		<!ELEMENT service (implements|property|const|method|serviceMethod|anotate)*>
+		<!ATTLIST service
+				type CDATA #IMPLIED>
+
+		<!ELEMENT method (param|anotate)*>
+		<!ATTLIST method
+				name CDATA #IMPLIED
+				lang CDATA #IMPLIED
+				returns CDATA #IMPLIED>
+
+		<!ELEMENT serviceMethod (param|anotate)*>
+		<!ATTLIST serviceMethod
+				name CDATA #IMPLIED
+				faultStrategy CDATA #IMPLIED
+				errorCode CDATA #IMPLIED
+				interceptable (true|false) "true"
+				lang CDATA #IMPLIED
+				returns CDATA #IMPLIED>
+
+		<!ELEMENT doc (#PCDATA|return|param|description)*>
+
+		<!ELEMENT description (#PCDATA)>
+
+		<!ELEMENT param EMPTY>
+		<!ATTLIST param
+				type CDATA #IMPLIED
+				name CDATA #IMPLIED
+				optional CDATA #IMPLIED>
+
+		<!ELEMENT anotate (#PCDATA)>
+		<!ATTLIST anotate
+				lang CDATA #IMPLIED>
+
+		<!ELEMENT return EMPTY>
+
+		<!ELEMENT class (implements|property|const|method|doc|serialization|anotate|extends)*>
+		<!ATTLIST class
+				%lang;
+				explicitRemoteClass CDATA #IMPLIED
+				remoteClass CDATA #IMPLIED
+				serialVersionId CDATA #IMPLIED
+				type CDATA #IMPLIED
+				keyType (true|false) "false"
+				toString (true|false) "false"
+				shallowCopy (true|false) "false"
+				generateConfigurationClass CDATA #IMPLIED
+				generateAs3Decorator CDATA #IMPLIED
+				includeAs3CloneMethod CDATA #IMPLIED
+				protobuf (true|false) "false"
+				isManageableResource (true|false) "false">
+		<!--
+			keyType - indicates if equals() and hashCode() are to be generated
+			toString - indicates if toString() is to be generated; only properties having toString attribute set to true will be included in toString()
+			shallowCopy - indicates if shallowCopy() is to be generated
+		-->
+
+		<!ELEMENT implements EMPTY>
+		<!ATTLIST implements
+				iface CDATA #IMPLIED
+				protobufInstance (true|false) "false">
+		<!--
+			protobufInstance - indicates if an instance of the class implementing iface should be used when deserializing iface
+		-->
+
+		<!ELEMENT const EMPTY>
+		<!ATTLIST const
+				type CDATA #REQUIRED
+				name CDATA #REQUIRED
+				value CDATA #REQUIRED
+				%lang;>
+
+		<!ELEMENT enum (property|item)*>
+		<!ATTLIST enum
+				%lang;
+				type CDATA #REQUIRED
+				hibernateSupport (true|false) "false"
+				messageSourceResolvable CDATA #IMPLIED>
+
+		<!ELEMENT item (#PCDATA)>
+		<!ATTLIST item
+				sequenceId CDATA #IMPLIED
+				args CDATA #IMPLIED>
+
+		<!ELEMENT include EMPTY>
+		<!ATTLIST include
+				path CDATA #REQUIRED>
+
+		<!ELEMENT formGroup (form)*>
+		<!ATTLIST formGroup
+				type CDATA #REQUIRED
+				destination CDATA #IMPLIED
+				method CDATA #IMPLIED
+				faultStrategy CDATA #IMPLIED
+				errorCode CDATA #IMPLIED
+				toString (true|false) "false">
+
+		<!ELEMENT form (inheritFromType|property)*>
+		<!ATTLIST form
+				type CDATA #REQUIRED
+				destination CDATA #IMPLIED
+				method CDATA #IMPLIED
+				faultStrategy CDATA #IMPLIED
+				errorCode CDATA #IMPLIED
+				uninterceptable CDATA #IMPLIED>
+
+		<!ELEMENT inheritFromType (property)*>
+		<!ATTLIST inheritFromType
+				type CDATA #REQUIRED>
+
+		<!ELEMENT constraint EMPTY>
+		<!ATTLIST constraint
+				type CDATA #REQUIRED
+				value CDATA #IMPLIED
+				displayedInvalidCharacters CDATA #IMPLIED
+				ommit CDATA #IMPLIED>
+
+		<!ELEMENT message EMPTY>
+		<!ATTLIST message
+				type CDATA #REQUIRED>
+
+		<!ELEMENT serialization EMPTY>
+		<!ATTLIST serialization
+				type       (java|protobuf) "java"
+				zip        (true|false) "false"
+				transcoder (true|false) "false">

@@ -1,0 +1,66 @@
+package {{package}}
+{
+	{{#imports}}
+    import {{classNamespace}}.{{className}};
+	{{/imports}}
+
+	public class {{className}} {{#superClass?}}extends {{superClassTypes.first.className}}{{/superClass?}} {{#implements}}implements {{implements.first.className}}{{#implements.rest}}, {{className}}{{/implements.rest}}{{/implements?}}
+	{
+		{{#properties?}}
+		///////////////////////////////////////////////
+		//  properties
+		//////////////////////////////////////////////
+
+		{{/properties?}}
+
+		{{#properties.all}}
+		//---------------------------------------------
+		//  {{name}}
+		//---------------------------------------------
+
+		private var _{{name}}:{{#type}}{{className}}{{/type}};
+
+		public function get {{name}}():{{#type}}{{className}}{{/type}}
+		{
+			return _{{name}};
+		}
+
+		public function set {{name}}(value:{{#type}}{{className}}{{/type}}):void
+		{
+			_{{name}} = value;
+		}
+
+        {{/properties.all}}
+
+		///////////////////////////////////////////////
+		//  constructor
+		//////////////////////////////////////////////
+
+		public function {{className}}()
+		{
+			{{#superClass?}}
+			super();
+			{{/superClass?}}
+		}
+
+		{{#methods?}}
+		///////////////////////////////////////////////
+		//  methods
+		///////////////////////////////////////////////
+
+		{{/methods?}}
+
+		{{#methods.all}}
+		//---------------------------------------------
+		//  {{name}}
+		//---------------------------------------------
+
+		public function {{name}}( {{#params}}{{#first}}{{name}}:{{#type}}{{className}}{{/type}}{{/first}}{{#rest}}, {{name}}:{{#type}}{{className}}{{/type}}{{/rest}}{{/params}} ):{{#returns}}{{className}}{{/returns}}
+		{
+			throw new IlligalOperationError("override method {{name}} in subclass");
+		}
+
+		{{/methods.all}}
+
+	}
+}
