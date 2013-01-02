@@ -8,3 +8,6 @@ pom.xml
 .lein-deps-sum
 .lein-failures
 .lein-plugins
+model_generator.iml
+model_generator.sublime-project
+model_generator.sublime-workspace
