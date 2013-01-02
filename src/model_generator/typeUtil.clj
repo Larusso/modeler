@@ -125,27 +125,6 @@
     )
   )
 
-;;get imports
-
-(defn getImports
-  "returns a sequence with all types used in class or interface"
-  [model]
-  (let [zipModel (zip/xml-zip model)]
-    (distinct
-      (filter #(not (= "" (:classNamespace %)))
-        (concat
-          (map getTypeComponents (zf/xml-> zipModel :implements (zf/attr :iface )))
-          (map getTypeComponents (zf/xml-> zipModel :extends (zf/attr :type )))
-
-          (map getTypeComponents (zf/xml-> zipModel :property (zf/attr :type )))
-          (map getTypeComponents (zf/xml-> zipModel :method (zf/attr :returns )))
-          (map getTypeComponents (zf/xml-> zipModel :method :param (zf/attr :type )))
-          )
-        )
-      )
-    )
-  )
-
 ;;superclass
 (defn create-extends-object
   [extend-tag]
@@ -288,5 +267,29 @@
   "returns true if the given classmodel contains methods"
   [model]
   (> (count (get-methods model)) 0)
+  )
+
+;;get imports
+(defn get-imports
+  "returns a sequence with all types used in class or interface"
+  (
+    ;;if no predicate function is specified, use default function
+    [model]
+    (get-imports model #(not (= "" (:classNamespace %))))
+    )
+  (
+    [model pred]
+    (distinct
+      (filter pred
+        (concat
+          (get-implemented-interfaces model)
+          (get-extends-types model)
+          (map :type (get-properties model))
+          (map :returns (get-methods model))
+          (mapcat #(map :type (:params %1)) (get-methods model))
+          )
+        )
+      )
+    )
   )
 

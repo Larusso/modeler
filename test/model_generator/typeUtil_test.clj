@@ -13,6 +13,11 @@
     (and (= className (:className type)) (= namespace (:classNamespace type))))
   )
 
+(defn isTypeDefinition?
+  [item]
+  (and (contains? item :className ) (contains? item :classNamespace ))
+  )
+
 (deftest test-xml-model
   (testing "test empty class"
     (let [classObject (getTagByAttributeValue xmlModel :class :type "SimpleClass")]
@@ -144,13 +149,47 @@
   )
 
 (deftest test-class-imports
-  (testing "getImports with iface"
-    (let [xmlObject (getTagByAttributeValue xmlModel :class :type "BaseClass")
-          imports (getImports xmlObject)]
-      (is (= 2 (count imports)))
-      (is (not (nil? (first imports))))
+  (testing "get imports with basic class"
+    (binding [*model* xmlModel]
+      (let [class (get-class-by-name xmlModel "BaseClass")
+            imports (get-imports class)]
+        (is (= 2 (count imports)))
+        (is (not (nil? (first imports))))
+        (is (every? isTypeDefinition? imports))
+        )
       )
     )
+
+  (testing "get-imports class with methods and method params"
+    (binding [*model* xmlModel]
+      (let [class (get-class-by-name xmlModel "MultimethodClass")
+            imports (get-imports class)]
+        (is (= 8 (count imports)))
+        (is (every? isTypeDefinition? imports))
+        )
+      )
+    )
+
+  (testing "get-imports class with superclass and methods and method params"
+    (binding [*model* xmlModel]
+      (let [class (get-class-by-name xmlModel "MultimethodClass2")
+            imports (get-imports class)]
+        (is (= 3 (count imports)))
+        (is (every? isTypeDefinition? imports))
+        )
+      )
+    )
+
+  (testing "get-imports class with implemented interface, properties and methods and method params"
+    (binding [*model* xmlModel]
+      (let [class (get-class-by-name xmlModel "SuperTestClass")
+            imports (get-imports class)]
+        (is (= 10 (count imports)))
+        (is (every? isTypeDefinition? imports))
+        )
+      )
+    )
+
   )
 
 (deftest test-get-properties
@@ -265,6 +304,7 @@
             class2 (get-class-by-name xmlModel "SimpleClass")
             class3 (get-class-by-name xmlModel "ExtendedClass")
             class4 (get-class-by-name xmlModel "ExtendedClass2")
+            class5 (get-class-by-name xmlModel "SuperTestClass")
             check-method #(and (map? %) (contains? % :name ) (contains? % :returns ))
             ]
 
@@ -285,6 +325,10 @@
         (is (= (count (get-methods class4)) 1))
 
         (is (every? check-method (get-methods class4)))
+
+        (is (true? (methods? class5)))
+        (is (= (count (get-methods class5)) 4))
+        (is (every? check-method (get-methods class5)))
 
         )
       )

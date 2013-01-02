@@ -37,7 +37,7 @@
     {:implements? (typeUtil/implements-iface? xmltag)}
     {:implements (typeUtil/pack-list (typeUtil/get-implemented-interfaces xmltag))}
 
-    {:imports (typeUtil/getImports xmltag)}
+    {:imports (typeUtil/get-imports xmltag)}
 
     {:properties (typeUtil/pack-list (typeUtil/get-properties xmltag))}
     {:properties? (typeUtil/properties? xmltag)}

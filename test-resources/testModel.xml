@@ -52,4 +52,71 @@
 		<extends type="mx.collections.ArrayCollection"/>
 		<property type="string" name="name"/>
 	</class>
+
+	<class type="MultimethodClass">
+		<method name="doStuff" returns="de.example.TestClass">
+			<param name="param1" type="de.example.TestClass1"/>
+			<param name="param2" type="de.example.TestClass2"/>
+			<param name="param3" type="de.example.TestClass3"/>
+			<param name="param4" type="de.example.TestClass4"/>
+			<param name="param5" type="de.example.TestClass5"/>
+			<param name="param6" type="de.example.TestClass6"/>
+			<param name="param7" type="de.example.TestClass7"/>
+			<param name="param8" type="de.example.TestClass7"/>
+			<param name="param9" type="de.example.TestClass7"/>
+		</method>
+	</class>
+
+	<class type="MultimethodClass2">
+		<extends type="MultimethodClass"/>
+		<method name="doMoreStuff" returns="de.example.TestClass8">
+			<param name="param1" type="de.example.TestClass9"/>
+			<param name="param2" type="de.example.TestClass10"/>
+		</method>
+	</class>
+
+	<iface type="ISuperTestClass">
+		<property name="property1" type="de.example.TestClass"/>
+		<property name="property2" type="de.example.TestClass3"/>
+
+		<method name="doMoreStuff3" returns="de.example.TestClass5">
+			<param name="param1" type="de.example.TestClass1"/>
+			<param name="param2" type="de.example.TestClass7"/>
+			<param name="param3" type="string"/>
+		</method>
+
+		<method name="doMoreStuff4" returns="de.example.TestClass8">
+			<param name="param1" type="de.example.TestClass9"/>
+			<param name="param2" type="de.example.TestClass7"/>
+			<param name="param3" type="string"/>
+		</method>
+	</iface>
+
+	<class type="SuperTestClass">
+
+		<implements iface="ISuperTestClass"/>
+
+		<property name="property1" type="de.example.TestClass"/>
+		<property name="property2" type="de.example.TestClass3"/>
+		<property name="property3" type="de.example.TestClass3"/>
+		<property name="property4" type="de.example.TestClass4"/>
+
+		<method name="doMoreStuff" returns="de.example.TestClass">
+			<param name="param1" type="de.example.TestClass1"/>
+			<param name="param2" type="de.example.TestClass2"/>
+			<param name="param3" type="string"/>
+		</method>
+
+		<method name="doMoreStuff2" returns="de.example.TestClass5">
+			<param name="param1" type="de.example.TestClass1"/>
+			<param name="param2" type="de.example.TestClass6"/>
+			<param name="param3" type="string"/>
+		</method>
+
+		<method name="doMoreStuff3" returns="de.example.TestClass5">
+			<param name="param1" type="de.example.TestClass1"/>
+			<param name="param2" type="de.example.TestClass7"/>
+			<param name="param3" type="string"/>
+		</method>
+	</class>
 </model>
