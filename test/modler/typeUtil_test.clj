@@ -329,7 +329,6 @@
         (is (true? (methods? class5)))
         (is (= (count (get-methods class5)) 4))
         (is (every? check-method (get-methods class5)))
-
         )
       )
     )

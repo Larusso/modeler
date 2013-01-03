@@ -2,7 +2,7 @@
   (:gen-class )
   (:require [clojure.string :refer (split)]
             [clojure.tools.cli :refer (cli)]
-            [modler.core :refer :all ] :verbose ))
+            [modler.core :as core ] :verbose ))
 
 (defn -main "Application entry point" [& args]
   (comment Do app initialization here)
@@ -21,5 +21,5 @@
 
     (println options)
     (println args)
-    (loadAndZipXml (get args 0)))
+    (core/loadAndZipXml (get args 0)))
   )
