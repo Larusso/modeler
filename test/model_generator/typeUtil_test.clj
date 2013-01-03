@@ -10,12 +10,12 @@
     (isType? type className "")
     )
   ([type className namespace]
-    (and (= className (:className type)) (= namespace (:classNamespace type))))
+    (and (= className (:name type)) (= namespace (:namespace type))))
   )
 
 (defn isTypeDefinition?
   [item]
-  (and (contains? item :className ) (contains? item :classNamespace ))
+  (and (contains? item :name ) (contains? item :namespace ))
   )
 
 (deftest test-xml-model
@@ -120,30 +120,30 @@
 
   (testing "getTypeComponents"
     (let [type1 (getTypeComponents "UIComponent") type2 (getTypeComponents "mx.components.UIComponent")]
-      (is (= "" (:classNamespace type1)))
-      (is (= "UIComponent" (:className type1)))
+      (is (= "" (:namespace type1)))
+      (is (= "UIComponent" (:name type1)))
 
-      (is (= "mx.components" (:classNamespace type2)))
-      (is (= "UIComponent" (:className type2)))
+      (is (= "mx.components" (:namespace type2)))
+      (is (= "UIComponent" (:name type2)))
       )
     )
   )
 
-(deftest test-get-class-name
-  (testing "getClassName"
+(deftest test-get-type-name
+  (testing "get-type-name"
 
-    (is (= "UIComponent" (getClassName {:type "UIComponent"})))
+    (is (= "UIComponent" (get-type-name {:type "UIComponent"})))
 
-    (is (= "UIComponent" (getClassName {:type "mx.components.UIComponent"})))
+    (is (= "UIComponent" (get-type-name {:type "mx.components.UIComponent"})))
 
     )
   )
 
-(deftest test-get-class-namespace
-  (testing "getClassNamespace"
-    (is (= "" (getClassNamespace {:type "UIComponent"})))
+(deftest test-get-type-namespace
+  (testing "get-type-namespace"
+    (is (= "" (get-type-namespace {:type "UIComponent"})))
 
-    (is (= "mx.components" (getClassNamespace {:type "mx.components.UIComponent"})))
+    (is (= "mx.components" (get-type-namespace {:type "mx.components.UIComponent"})))
 
     )
   )
@@ -352,6 +352,72 @@
     )
   )
 
+(defn is-base-object?
+  [item]
+  (and
+    (contains? item :type-name )
+    (contains? item :package )
+    (contains? item :super-types )
+    (contains? item :super-types? )
+    (contains? item :imports )
+    (contains? item :properties )
+    (contains? item :properties? )
+    (contains? item :methods )
+    (contains? item :methods? )
+    )
+  )
+
+(defn is-class-object?
+  [item]
+  (and
+    (contains? item :implements )
+    (contains? item :implements? )
+    )
+  )
+
+(deftest test-get-base-object
+  (testing "get base object with simple type"
+    (binding [*model* xmlModel]
+      (let [class (get-class-by-name xmlModel "BaseClass")
+            classMap (get-base-object class)]
+
+        (is (map? classMap))
+        (is (= (:type-name classMap) "BaseClass"))
+        (is (= (:package classMap) ""))
+        (is (is-base-object? classMap))
+        )
+      )
+    )
+  )
+
+(deftest test-get-class
+  (testing "get class object with simple type"
+    (binding [*model* xmlModel]
+      (let [class (get-class-by-name xmlModel "BaseClass")
+            classMap (get-class class)]
+
+        (is (map? classMap))
+        (is (is-class-object? classMap))
+        (is (is-base-object? classMap))
+        )
+      )
+    )
+  )
+
+(deftest test-get-interface
+  (testing "get interace object with simple type"
+    (binding [*model* xmlModel]
+      (let [interface (get-iface-by-name xmlModel "IBaseClass")
+            map (get-interface interface)]
+
+        (is (map? map))
+        (is (not (is-class-object? map)))
+        (is (is-base-object? map))
+        )
+      )
+    )
+  )
+
 (deftest filterTagTest
   (testing "filter tag")
   (let [xmlObject {:tag :class,
@@ -380,20 +446,20 @@
 (deftest type-lookup
   (testing "lookup type as3"
     (binding [*lang* "as3"]
-      (is (= "String" (:className (getTypeComponents "string"))))
-      (is (= "int" (:className (getTypeComponents "int"))))
-      (is (= "Number" (:className (getTypeComponents "long"))))
-      (is (= "ArrayCollection" (:className (getTypeComponents "collection"))))
-      (is (= {:classNamespace "mx.collections", :className "ArrayCollection"} (getTypeComponents "collection")))
+      (is (= "String" (:name (getTypeComponents "string"))))
+      (is (= "int" (:name (getTypeComponents "int"))))
+      (is (= "Number" (:name (getTypeComponents "long"))))
+      (is (= "ArrayCollection" (:name (getTypeComponents "collection"))))
+      (is (= {:namespace "mx.collections", :name "ArrayCollection"} (getTypeComponents "collection")))
       )
     )
 
   (testing "lookup type java"
     (binding [*lang* "java"]
-      (is (= "String" (:className (getTypeComponents "string"))))
-      (is (= "int" (:className (getTypeComponents "int"))))
-      (is (= "long" (:className (getTypeComponents "long"))))
-      (is (= "Collection<?>" (:className (getTypeComponents "collection"))))
+      (is (= "String" (:name (getTypeComponents "string"))))
+      (is (= "int" (:name (getTypeComponents "int"))))
+      (is (= "long" (:name (getTypeComponents "long"))))
+      (is (= "Collection<?>" (:name (getTypeComponents "collection"))))
       )
     )
   )

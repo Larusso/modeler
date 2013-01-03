@@ -1,10 +1,10 @@
 package {{package}}
 {
 	{{#imports}}
-    import {{classNamespace}}.{{className}};
+    import {{namespace}}.{{name}};
 	{{/imports}}
 
-	public class {{className}} {{#superClass?}}extends {{superClassTypes.first.className}}{{/superClass?}} {{#implements}}implements {{implements.first.className}}{{#implements.rest}}, {{className}}{{/implements.rest}}{{/implements?}}
+	public class {{type-name}}{{#super-types?}} extends {{super-types.first.name}}{{/super-types?}}{{#implements}} implements {{implements.first.name}}{{#implements.rest}}, {{name}}{{/implements.rest}}{{/implements?}}
 	{
 		{{#properties?}}
 		///////////////////////////////////////////////
@@ -18,14 +18,14 @@ package {{package}}
 		//  {{name}}
 		//---------------------------------------------
 
-		private var _{{name}}:{{#type}}{{className}}{{/type}};
+		private var _{{name}}:{{#type}}{{name}}{{/type}};
 
-		public function get {{name}}():{{#type}}{{className}}{{/type}}
+		public function get {{name}}():{{#type}}{{name}}{{/type}}
 		{
 			return _{{name}};
 		}
 
-		public function set {{name}}(value:{{#type}}{{className}}{{/type}}):void
+		public function set {{name}}(value:{{#type}}{{name}}{{/type}}):void
 		{
 			_{{name}} = value;
 		}
@@ -36,11 +36,11 @@ package {{package}}
 		//  constructor
 		//////////////////////////////////////////////
 
-		public function {{className}}()
+		public function {{name}}()
 		{
-			{{#superClass?}}
+			{{#super-types?}}
 			super();
-			{{/superClass?}}
+			{{/super-types?}}
 		}
 
 		{{#methods?}}
@@ -55,7 +55,7 @@ package {{package}}
 		//  {{name}}
 		//---------------------------------------------
 
-		public function {{name}}( {{#params}}{{#first}}{{name}}:{{#type}}{{className}}{{/type}}{{/first}}{{#rest}}, {{name}}:{{#type}}{{className}}{{/type}}{{/rest}}{{/params}} ):{{#returns}}{{className}}{{/returns}}
+		public function {{name}}( {{#params}}{{#first}}{{name}}:{{#type}}{{name}}{{/type}}{{/first}}{{#rest}}, {{name}}:{{#type}}{{name}}{{/type}}{{/rest}}{{/params}} ):{{#returns}}{{name}}{{/returns}}
 		{
 			throw new IlligalOperationError("override method {{name}} in subclass");
 		}

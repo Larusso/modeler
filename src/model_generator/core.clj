@@ -26,30 +26,9 @@
   (println "map class:")
   (= :iface (:tag classModel)))
 
-(defn createClassObject [xmltag]
-
-
-  (merge
-    {:className (typeUtil/getClassName (:attrs xmltag))}
-    {:package (typeUtil/getClassNamespace (:attrs xmltag))}
-    {:superClassTypes (typeUtil/pack-list (typeUtil/get-extends-types xmltag))}
-    {:superClass? (typeUtil/extends-type? xmltag)}
-    {:implements? (typeUtil/implements-iface? xmltag)}
-    {:implements (typeUtil/pack-list (typeUtil/get-implemented-interfaces xmltag))}
-
-    {:imports (typeUtil/get-imports xmltag)}
-
-    {:properties (typeUtil/pack-list (typeUtil/get-properties xmltag))}
-    {:properties? (typeUtil/properties? xmltag)}
-
-    {:methods (typeUtil/pack-list (typeUtil/get-methods xmltag))}
-    {:methods? (typeUtil/methods? xmltag)}
-    )
-  )
-
 (defn generateClass [model, tagType]
-  (pprint (map createClassObject (typeUtil/filterTag tagType model)))
-  (let [classes (map createClassObject (typeUtil/filterTag tagType model))]
+  (pprint (map typeUtil/get-class (typeUtil/filterTag tagType model)))
+  (let [classes (map typeUtil/get-class (typeUtil/filterTag tagType model))]
     (doseq [item classes]
       (println (clostache/render-resource "templates/as3/class.mustache" item)))
     )

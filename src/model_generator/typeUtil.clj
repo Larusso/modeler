@@ -86,8 +86,8 @@
     (if (re-find #"\." type)
       (do
         (let [nameComponents (split type #"\.")]
-          {:classNamespace (join "." (pop nameComponents)),
-           :className (peek nameComponents)}
+          {:namespace (join "." (pop nameComponents)),
+           :name (peek nameComponents)}
           )
         )
 
@@ -98,27 +98,27 @@
             (getTypeComponents newType false)
             )
           )
-        {:classNamespace ""
-         :className type}
+        {:namespace ""
+         :name type}
         )
       )
     )
   )
 
-(defn getClassName
+(defn get-type-name
   "returns the className of the given type"
   [{type :type}]
-  (:className (getTypeComponents type))
+  (:name (getTypeComponents type))
   )
 
-(defn getClassNamespace
+(defn get-type-namespace
   "returns the namespace of the given type"
   [{type :type}]
-  (:classNamespace (getTypeComponents type))
+  (:namespace (getTypeComponents type))
   )
 
 (defn get-qualified-name
-  [{className :className classNamespace :classNamespace}]
+  [{className :name classNamespace :namespace}]
   (if (= "" classNamespace)
     (str className)
     (join "." [classNamespace className])
@@ -275,7 +275,7 @@
   (
     ;;if no predicate function is specified, use default function
     [model]
-    (get-imports model #(not (= "" (:classNamespace %))))
+    (get-imports model #(not (= "" (:namespace %))))
     )
   (
     [model pred]
@@ -293,3 +293,34 @@
     )
   )
 
+;;get class object
+(defn get-base-object
+  [model]
+  {:type-name (get-type-name (:attrs model))
+   :package (get-type-namespace (:attrs model))
+   :super-types (pack-list (get-extends-types model))
+   :super-types? (extends-type? model)
+
+   :imports (get-imports model)
+
+   :properties (pack-list (get-properties model))
+   :properties? (properties? model)
+   :methods (pack-list (get-methods model))
+   :methods? (methods? model)}
+  )
+
+(defn get-interface
+  "returnsa a interface object map"
+  [model]
+  (get-base-object model)
+  )
+
+(defn get-class
+  "returns a class object map"
+  [model]
+  (merge
+    (get-base-object model)
+    {:implements? (implements-iface? model)
+     :implements (pack-list (get-implemented-interfaces model))}
+    )
+  )
