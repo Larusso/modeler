@@ -1,9 +1,9 @@
-(ns model-generator.core
+(ns modler.core
   (:import (java.io ByteArrayInputStream))
   (:require [clojure.xml :as xml]
             [clojure.zip :as zip]
             [clojure.data.zip.xml :as zf]
-            [model-generator.typeUtil :as typeUtil]
+            [modler.typeUtil :as typeUtil]
             [clojure.pprint :refer :all ]
             [clostache.parser :as clostache] :verbose ))
 

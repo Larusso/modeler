@@ -1,8 +1,8 @@
-(ns model-generator.runner
+(ns modler.runner
   (:gen-class )
   (:require [clojure.string :refer (split)]
             [clojure.tools.cli :refer (cli)]
-            [model-generator.core :refer :all ] :verbose))
+            [modler.core :refer :all ] :verbose ))
 
 (defn -main "Application entry point" [& args]
   (comment Do app initialization here)

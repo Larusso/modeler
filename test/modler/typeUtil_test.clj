@@ -1,6 +1,6 @@
-(ns model_generator.typeUtil-test
+(ns modler.typeUtil-test
   (:require [clojure.test :refer :all ]
-            [model-generator.typeUtil :refer :all ]
+            [modler.typeUtil :refer :all ]
             [clojure.pprint :refer :all ]))
 
 (def xmlModel (get-struct-map (slurp "test-resources/testModel.xml")))

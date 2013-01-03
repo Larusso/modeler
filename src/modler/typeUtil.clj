@@ -1,4 +1,4 @@
-(ns model-generator.typeUtil
+(ns modler.typeUtil
   (:import (java.io ByteArrayInputStream))
   (:require [clojure.string :refer (split join lower-case)]
             [clojure.zip :as zip]

@@ -1,6 +1,6 @@
-(defproject model_generator "0.1.0-SNAPSHOT"
-  :description "Model class generator"
-  :url "http://tslarusso.de/model_generator"
+(defproject de.larusso.modler/modler "0.1.0-SNAPSHOT"
+  :description "Sourcecode generator"
+  :url "http://tslarusso.de/modler"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.4.0"]
@@ -10,4 +10,4 @@
                  [org.clojure/data.xml "0.0.6"]]
 
   :profiles {:dev {:resource-paths ["test-resources"]}}
-  :main model-generator.runner)
+  :main modler.runner)
