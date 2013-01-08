@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified"
+           elementFormDefault="qualified"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://www.modeler.tslarusso.de/modelerSchema"
+           xmlns="http://www.modeler.tslarusso.de/modelerSchema">
+
+	<xs:element name="model" type="model-type"/>
+
+	<xs:complexType name="model-type">
+		<xs:sequence maxOccurs="unbounded" minOccurs="0">
+			<xs:group ref="model-group" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:group name="model-group">
+		<xs:sequence>
+			<xs:element type="xs:string" name="import" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element type="typesType" name="types" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element type="ifaceType" name="iface" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element type="classType" name="class" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:any minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:group>
+
+	<xs:attributeGroup name="type-lang-attrgroup">
+		<xs:attribute type="type-type" name="type" use="required"/>
+		<xs:attribute type="xs:string" name="lang" default="*"/>
+	</xs:attributeGroup>
+
+	<xs:group name="classMembers-group">
+		<xs:sequence>
+			<xs:element type="extendsType" name="extends" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element type="propertyType" name="property" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element type="methodType" name="method" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:any minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:group>
+
+	<xs:complexType name="ifaceType">
+		<xs:sequence maxOccurs="unbounded">
+			<xs:group ref="classMembers-group"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="type-lang-attrgroup"/>
+	</xs:complexType>
+
+	<xs:complexType name="classType">
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element type="implements-type" name="implements" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:group ref="classMembers-group"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="type-lang-attrgroup"/>
+	</xs:complexType>
+
+	<xs:complexType name="propertyType">
+		<xs:attribute type="xs:string" name="name" use="required"/>
+		<xs:attributeGroup ref="type-lang-attrgroup"/>
+		<xs:anyAttribute/>
+	</xs:complexType>
+
+	<xs:complexType name="methodType">
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element type="param-type" name="param" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute type="type-type" name="returns" use="required"/>
+		<xs:attribute type="xs:string" name="name" use="required"/>
+		<xs:attribute type="xs:string" name="lang" default="*"/>
+		<xs:anyAttribute/>
+	</xs:complexType>
+
+	<xs:complexType name="extendsType">
+		<xs:attributeGroup ref="type-lang-attrgroup"/>
+	</xs:complexType>
+
+	<xs:complexType name="param-type">
+		<xs:attribute type="xs:string" name="name" use="required"/>
+		<xs:attributeGroup ref="type-lang-attrgroup"/>
+	</xs:complexType>
+
+	<xs:complexType name="implements-type">
+		<xs:attribute type="type-type" name="iface" use="required"/>
+		<xs:attribute type="xs:string" name="lang" default="*"/>
+	</xs:complexType>
+
+	<xs:simpleType name="type-type">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="([A-Za-z0-9_]*\.)*([\(\)\[\]A-Za-z0-9_]*)"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="typesType">
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element type="objecttype-type" name="type"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="objecttype-type">
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element type="targetType" name="target" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute type="xs:string" name="name" use="required"/>
+	</xs:complexType>
+
+	<xs:complexType name="targetType">
+		<xs:attribute type="xs:string" name="value" use="required"/>
+		<xs:attribute type="xs:string" name="lang" default="*"/>
+	</xs:complexType>
+
+</xs:schema>

@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE model SYSTEM "generator.dtd">
-<model>
+<!DOCTYPE model SYSTEM "http://www.modeler.tslarusso.de/generator.dtd">
+<model xmlns="http://www.modeler.tslarusso.de/modelerSchema"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.modeler.tslarusso.de/modeler.xsd">
+
+	<types>
+		<type name="void">
+			<target lang="java" value="void"/>
+			<target lang="as3" value="void"/>
+		</type>
+	</types>
+
 	<iface type="de.tslarusso.interfaces.IServerProfileInfo">
 		<property type="int" name="profileId"/>
 		<property type="string" name="name"/>
@@ -21,13 +31,13 @@
 		<property type="string" name="locale"/>
 		<property type="boolean" name="newsletterEnabled"/>
 		<property type="set(integer)" name="roleIds"/>
-		<property type="int" name="styleSlotCount" bindable="true"/>
-		<property type="int" name="sessionCount" bindable="true"/>
+		<property type="int" name="styleSlotCount"/>
+		<property type="int" name="sessionCount"/>
 	</iface>
 
 	<class type="de.tslarusso.model.ServerProfileInfo">
-		<extends type="de.tslarusso.model.ServerProfileInfo2"/>
 		<implements iface="de.tslarusso.interfaces.IServerProfileInfo"/>
+		<extends type="de.tslarusso.model.ServerProfileInfo2"/>
 		<property type="int" name="profileId"/>
 		<property type="string" name="name"/>
 		<property type="com.domain.Sex" name="sex"/>

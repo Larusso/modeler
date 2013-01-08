@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE model SYSTEM "http://www.modeler.tslarusso.de/generator.dtd">
+<model xmlns="http://www.modeler.tslarusso.de/modelerSchema"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.modeler.tslarusso.de/modeler.xsd">
+	<types>
+		<type name="void">
+			<target lang="java" value="void"/>
+			<target lang="as3" value="void"/>
+		</type>
+		<type name="object">
+			<target lang="java" value="Map"/>
+			<target lang="as3" value="Object"/>
+		</type>
+		<type name="objectarray">
+			<target lang="java" value="Object[]"/>
+			<target lang="as3" value="Array"/>
+		</type>
+		<type name="uint">
+			<target lang="java" value="int"/>
+			<target lang="as3" value="uint"/>
+		</type>
+		<type name="int">
+			<target lang="java" value="int"/>
+			<target lang="as3" value="int"/>
+		</type>
+		<type name="long">
+			<target lang="java" value="long"/>
+			<target lang="as3" value="Number"/>
+		</type>
+		<type name="objectlong">
+			<target lang="java" value="Long"/>
+			<target lang="as3" value="Number"/>
+		</type>
+		<type name="integer">
+			<target lang="java" value="Integer"/>
+			<target lang="as3" value="int"/>
+		</type>
+		<type name="char">
+			<target lang="java" value="char"/>
+			<target lang="as3" value="char"/>
+		</type>
+		<type name="float">
+			<target lang="java" value="float"/>
+			<target lang="as3" value="Number"/>
+		</type>
+		<type name="double">
+			<target lang="java" value="double"/>
+			<target lang="as3" value="Number"/>
+		</type>
+		<type name="boolean">
+			<target lang="java" value="boolean"/>
+			<target lang="as3" value="Boolean"/>
+		</type>
+		<type name="string">
+			<target lang="java" value="String"/>
+			<target lang="as3" value="String"/>
+		</type>
+		<type name="list">
+			<target lang="java" value="List&lt;?&gt;"/>
+			<target lang="as3" value="ArrayCollection"/>
+		</type>
+		<type name="objectlist">
+			<target lang="java" value="List&lt;Object&gt;"/>
+			<target lang="as3" value="mx.collections.ArrayCollection"/>
+		</type>
+		<type name="arraylist">
+			<target lang="java" value="List&lt;Object&gt;"/>
+			<target lang="as3" value="mx.collections.ArrayCollection"/>
+		</type>
+
+		<type name="set">
+			<target lang="java" value="Set&lt;?&gt;"/>
+			<target lang="as3" value="mx.collections.ArrayCollection"/>
+		</type>
+		<type name="collection">
+			<target lang="java" value="Collection&lt;?&gt;"/>
+			<target lang="as3" value="mx.collections.ArrayCollection"/>
+		</type>
+		<type name="map">
+			<target lang="java" value="Map&lt;String,?&gt;"/>
+			<target lang="as3" value="Object"/>
+		</type>
+		<type name="map(string,string)">
+			<target lang="java" value="Map&lt;String,String&gt;"/>
+			<target lang="as3" value="Object"/>
+		</type>
+		<type name="wildcard">
+			<target lang="java" value="Object"/>
+			<target lang="as3" value="*"/>
+		</type>
+		<type name="bytearray">
+			<target lang="java" value="byte[]"/>
+			<target lang="as3" value="ByteArray"/>
+		</type>
+		<type name="date">
+			<target lang="java" value="Date"/>
+			<target lang="as3" value="Date"/>
+		</type>
+
+		<type name="bitmap">
+			<target lang="as3" value="flash.display.Bitmap"/>
+		</type>
+
+		<type name="asyncMessage">
+			<target lang="as3" value="mx.messaging.messages.AsyncMessage"/>
+		</type>
+
+		<type name="message">
+			<target lang="as3" value="Object"/>
+		</type>
+	</types>
+
+	<class type="JavaTestClass" lang="java"/>
+	<class type="ASTestClass" lang="as3"/>
+	<class type="NormalClass"/>
+</model>
