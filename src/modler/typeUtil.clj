@@ -48,8 +48,6 @@
 
 (defn getTagByAttributeValue
   [model tagName attribute value]
-  ;;(first (filter #(and (= tagName (:tag %1)) (= value (:name (:attrs %1)))) model))
-
   (let [zipModel (zip/xml-zip model)]
     (first (zf/xml1-> zipModel tagName (zf/attr= attribute value)))
     )
@@ -58,15 +56,12 @@
 (defn get-class-by-name
   "returns class xml object from model"
   [model name]
-  ;;(println "get-class-by-name" name)
-  ;;(pprint model)
   (getTagByAttributeValue model :class :type name)
   )
 
 (defn get-iface-by-name
   "returns class xml object from model"
   [model name]
-  ;;(println "get-iface-by-name" name)
   (getTagByAttributeValue model :iface :type name)
   )
 
@@ -355,7 +350,7 @@
    :package (get-type-namespace (:attrs model))
    :super-types (pack-list (get-extends-types model))
    :super-types? (extends-type? model)
-   :generate-type (:tag model)
+   :generate-type (subs (str (:tag model)) 1)
    :imports (get-imports model)
 
    :properties (pack-list (get-properties model))
