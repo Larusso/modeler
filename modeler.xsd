@@ -16,7 +16,7 @@
 	<xs:group name="model-group">
 		<xs:sequence>
 			<xs:element type="xs:string" name="import" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element type="typesType" name="types" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element type="typesType" name="types" minOccurs="0" maxOccurs="1"/>
 			<xs:element type="ifaceType" name="iface" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element type="classType" name="class" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:any minOccurs="0" maxOccurs="unbounded"/>
@@ -96,7 +96,7 @@
 
 	<xs:complexType name="objecttype-type">
 		<xs:sequence maxOccurs="unbounded">
-			<xs:element type="targetType" name="target" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element type="targetType" name="target" minOccurs="1" maxOccurs="unbounded"/>
 		</xs:sequence>
 		<xs:attribute type="xs:string" name="name" use="required"/>
 	</xs:complexType>
@@ -105,5 +105,6 @@
 		<xs:attribute type="xs:string" name="value" use="required"/>
 		<xs:attribute type="xs:string" name="lang" default="*"/>
 	</xs:complexType>
+
 
 </xs:schema>

@@ -37,6 +37,7 @@
 
 		<!ELEMENT implements EMPTY>
 		<!ATTLIST implements
+				%lang;
 				iface CDATA #REQUIRED>
 
 		<!ELEMENT include EMPTY>

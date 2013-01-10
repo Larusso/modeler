@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE model SYSTEM "http://www.modeler.tslarusso.de/generator.dtd">
+<model xmlns="http://www.modeler.tslarusso.de/modelerSchema"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.modeler.tslarusso.de/modeler.xsd">
+
+	<class type="NormalClass">
+		<method returns="void" name="actionscriptMethod" lang="as3">
+			<param name="param1" type="NormalClass"/>
+			<param name="param2" type="NormalClass"/>
+			<param name="param3" type="NormalClass"/>
+		</method>
+
+		<method returns="void" name="javaMethod" lang="java">
+			<param name="param1" type="NormalClass"/>
+			<param name="param2" type="NormalClass"/>
+			<param name="param3" type="NormalClass"/>
+			<param name="param4" type="NormalClass"/>
+		</method>
+	</class>
+</model>

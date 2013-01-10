@@ -112,6 +112,19 @@
 	</types>
 
 	<class type="JavaTestClass" lang="java"/>
+	<class type="JavaTestClass2" lang="java"/>
+	<class type="JavaTestClass3" lang="java"/>
+
 	<class type="ASTestClass" lang="as3"/>
-	<class type="NormalClass"/>
+	<class type="ASTestClass2" lang="as3"/>
+
+	<class type="NormalClass">
+		<method returns="void" name="asMethod1" lang="as3"/>
+		<method returns="void" name="asMethod2" lang="as3"/>
+		<method returns="void" name="commonMethod"/>
+		<method returns="void" name="javaMethod1" lang="java"/>
+		<method returns="void" name="javaMethod2" lang="java"/>
+		<method returns="void" name="javaMethod3" lang="java"/>
+	</class>
+	<class type="NormalClass2"/>
 </model>

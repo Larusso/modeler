@@ -4,6 +4,7 @@
             [clojure.pprint :refer :all ]))
 
 (def xmlModel (get-struct-map (slurp "test-resources/testModel.xml")))
+(def xmlModel2 (get-struct-map (slurp "test-resources/testModel2.xml")))
 
 (defn isType?
   ([type className]
@@ -150,7 +151,7 @@
 
 (deftest test-class-imports
   (testing "get imports with basic class"
-    (binding [*model* xmlModel]
+    (binding [*model* xmlModel *lang* "as3"]
       (let [class (get-class-by-name xmlModel "BaseClass")
             imports (get-imports class)]
         (is (= 2 (count imports)))
@@ -161,7 +162,7 @@
     )
 
   (testing "get-imports class with methods and method params"
-    (binding [*model* xmlModel]
+    (binding [*model* xmlModel *lang* "as3"]
       (let [class (get-class-by-name xmlModel "MultimethodClass")
             imports (get-imports class)]
         (is (= 8 (count imports)))
@@ -171,7 +172,7 @@
     )
 
   (testing "get-imports class with superclass and methods and method params"
-    (binding [*model* xmlModel]
+    (binding [*model* xmlModel *lang* "as3"]
       (let [class (get-class-by-name xmlModel "MultimethodClass2")
             imports (get-imports class)]
         (is (= 3 (count imports)))
@@ -181,7 +182,7 @@
     )
 
   (testing "get-imports class with implemented interface, properties and methods and method params"
-    (binding [*model* xmlModel]
+    (binding [*model* xmlModel *lang* "as3"]
       (let [class (get-class-by-name xmlModel "SuperTestClass")
             imports (get-imports class)]
         (is (= 10 (count imports)))
@@ -194,7 +195,7 @@
 
 (deftest test-get-properties
   (testing "get properties without extends or implementations"
-    (binding [*model* xmlModel]
+    (binding [*model* xmlModel *lang* "as3"]
       (let [class (get-class-by-name xmlModel "SimpleClass")
             interface (get-iface-by-name xmlModel "IBaseClass")
             check-method #(and (map? %) (contains? % :name ) (contains? % :type ))]
@@ -212,7 +213,7 @@
     )
 
   (testing "get properties with extends or implementations"
-    (binding [*model* xmlModel]
+    (binding [*model* xmlModel *lang* "as3"]
       (let [class (get-class-by-name xmlModel "BaseClass")
             class2 (get-class-by-name xmlModel "ExtendedClass")
             check-method #(and (map? %) (contains? % :name ) (contains? % :type ))]
@@ -234,7 +235,7 @@
     )
 
   (testing "get properties with library class as super class"
-    (binding [*model* xmlModel]
+    (binding [*model* xmlModel *lang* "as3"]
       (let [class (get-class-by-name xmlModel "ExtendsLibraryClass")
             check-method #(and (map? %) (contains? % :name ) (contains? % :type ))]
 
@@ -249,7 +250,7 @@
 
 (deftest test-implements-interfaces
   (testing "implements interfaces"
-    (binding [*model* xmlModel]
+    (binding [*model* xmlModel *lang* "as3"]
       (let [class (get-class-by-name xmlModel "BaseClass")
             class2 (get-class-by-name xmlModel "SimpleClass")]
 
@@ -299,7 +300,7 @@
 
 (deftest test-get-methods
   (testing "methods"
-    (binding [*model* xmlModel]
+    (binding [*model* xmlModel *lang* "as3"]
       (let [class1 (get-class-by-name xmlModel "BaseClass")
             class2 (get-class-by-name xmlModel "SimpleClass")
             class3 (get-class-by-name xmlModel "ExtendedClass")
@@ -336,17 +337,19 @@
 
 (deftest getParamsTest
   (testing "params"
-    (let [xmlObject {:tag :method
-                     :attrs {:returns "int" :name "callMe2"}
-                     :content [{:tag :param
-                                :attrs {:type "int" :name "param1"}}
-                               {:tag :param
-                                :attrs {:type "string" :name "param2"}}
-                               ]}]
+    (binding [*model* xmlModel *lang* "as3"]
+      (let [xmlObject {:tag :method
+                       :attrs {:returns "int" :name "callMe2"}
+                       :content [{:tag :param
+                                  :attrs {:type "int" :name "param1"}}
+                                 {:tag :param
+                                  :attrs {:type "string" :name "param2"}}
+                                 ]}]
 
-      (is (true? (params? xmlObject)))
-      (is (= 2 (count (getParams xmlObject))))
-      (is (= "param1" (:name (first (getParams xmlObject)))))
+        (is (true? (params? xmlObject)))
+        (is (= 2 (count (getParams xmlObject))))
+        (is (= "param1" (:name (first (getParams xmlObject)))))
+        )
       )
     )
   )
@@ -354,6 +357,7 @@
 (defn is-base-object?
   [item]
   (and
+    (contains? item :generate-type )
     (contains? item :type-name )
     (contains? item :package )
     (contains? item :super-types )
@@ -376,7 +380,7 @@
 
 (deftest test-get-base-object
   (testing "get base object with simple type"
-    (binding [*model* xmlModel]
+    (binding [*model* xmlModel *lang* "as3"]
       (let [class (get-class-by-name xmlModel "BaseClass")
             classMap (get-base-object class)]
 
@@ -391,7 +395,7 @@
 
 (deftest test-get-class
   (testing "get class object with simple type"
-    (binding [*model* xmlModel]
+    (binding [*model* xmlModel *lang* "as3"]
       (let [class (get-class-by-name xmlModel "BaseClass")
             classMap (get-class class)]
 
@@ -405,7 +409,7 @@
 
 (deftest test-get-interface
   (testing "get interace object with simple type"
-    (binding [*model* xmlModel]
+    (binding [*model* xmlModel *lang* "as3"]
       (let [interface (get-iface-by-name xmlModel "IBaseClass")
             map (get-interface interface)]
 
@@ -418,34 +422,57 @@
   )
 
 (deftest filterTagTest
-  (testing "filter tag")
-  (let [xmlObject {:tag :class,
-                   :attrs {:type "de.tslarusso.model.ServerProfileInfo"},
-                   :content [{:tag :method
-                              :attrs {:returns "string" :name "callMe"}
-                              :content nil}
-                             {:tag :method
-                              :attrs {:returns "int" :name "callMe2"}
-                              :content nil}
-                             {:tag :property
-                              :attrs {:type "string" :name "name"},
-                              :content nil}
-                             {:tag :property
-                              :attrs {:type "de.tslarusso.interfaces.IServerProfileInfo" :name "type"}
-                              :content nil}
-                             {:tag :property,
-                              :attrs {:type "int" :name "count"}
-                              :content nil}]}]
+  (testing "filter tag lang as3"
+    (binding [*model* xmlModel2 *lang* "as3"]
+      (is (= 4 (count (filterTag :class (:content xmlModel2)))))
+      (is (= 0 (count (filterTag :iface (:content xmlModel2)))))
 
-    (is (= 2 (count (filterTag :method (:content xmlObject)))))
-    (is (= 3 (count (filterTag :property (:content xmlObject)))))
+      (let [class (get-class-by-name xmlModel2 "NormalClass")]
+        (is (= 3 (count (filterTag :method (:content class)))))
+        )
+      )
+    )
+
+  (testing "filter tag lang as3"
+    (binding [*model* xmlModel2 *lang* "java"]
+      (is (= 5 (count (filterTag :class (:content xmlModel2)))))
+      (is (= 0 (count (filterTag :iface (:content xmlModel2)))))
+
+      (let [class (get-class-by-name xmlModel2 "NormalClass")]
+        (is (= 4 (count (filterTag :method (:content class)))))
+        )
+      )
+    )
+
+  (testing "parameter filtering as3"
+    (binding [*model* (get-struct-map (slurp "test-resources/test-model-filter-tag-lang.xml"))
+              *lang* "as3"]
+      (let [class (get-class-by-name *model* "NormalClass")
+            methods (filterTag :method (:content class))]
+        (is (= 1 (count methods)))
+        (is (= 3 (count (filterTag :param (:content (first methods))))))
+        )
+      )
+    )
+
+  (testing "parameter filtering java"
+    (binding [*model* (get-struct-map (slurp "test-resources/test-model-filter-tag-lang.xml"))
+              *lang* "java"]
+      (let [class (get-class-by-name *model* "NormalClass")
+            methods (filterTag :method (:content class))]
+        (is (= 1 (count methods)))
+        (is (= 4 (count (filterTag :param (:content (first methods))))))
+        )
+      )
     )
   )
 
 (deftest type-lookup
   (testing "lookup type as3"
-    (binding [*lang* "as3"]
+    (binding [*model* xmlModel *lang* "as3"]
       (is (= "String" (:name (getTypeComponents "string"))))
+      (is (= "void" (:name (getTypeComponents "void"))))
+      (is (= "Void" (:name (getTypeComponents "void2"))))
       (is (= "int" (:name (getTypeComponents "int"))))
       (is (= "Number" (:name (getTypeComponents "long"))))
       (is (= "ArrayCollection" (:name (getTypeComponents "collection"))))
@@ -454,21 +481,70 @@
     )
 
   (testing "lookup type java"
-    (binding [*lang* "java"]
+    (binding [*model* xmlModel *lang* "java"]
       (is (= "String" (:name (getTypeComponents "string"))))
       (is (= "int" (:name (getTypeComponents "int"))))
       (is (= "long" (:name (getTypeComponents "long"))))
       (is (= "Collection<?>" (:name (getTypeComponents "collection"))))
+      (is (= "asyncMessage" (:name (getTypeComponents "asyncMessage"))))
+      )
+    )
+
+  (testing "lookup type without lang"
+    (binding [*model* xmlModel]
+      (is (= "string" (:name (getTypeComponents "string"))))
+      (is (= "void" (:name (getTypeComponents "void"))))
+      (is (= "Void" (:name (getTypeComponents "void2"))))
+      (is (= "int" (:name (getTypeComponents "int"))))
+      (is (= "long" (:name (getTypeComponents "long"))))
+      (is (= "collection" (:name (getTypeComponents "collection"))))
       )
     )
   )
 
 (deftest tag-list
   (testing "get tag list"
-    (let [class (get-class-by-name xmlModel "BaseClass")
-          list (getTagList class :property createPropertieObject)]
-      (is (not= [] list))
-      (is (= 2 (count list)))
+    (binding [*model* xmlModel *lang* "as3"]
+      (let [class (get-class-by-name xmlModel "BaseClass")
+            list (getTagList class :property createPropertieObject)]
+        (is (not= [] list))
+        (is (= 2 (count list)))
+        )
       )
     )
   )
+
+(deftest test-get-types-definitions
+  (testing "get types"
+    (binding [*model* xmlModel]
+      (is (not (nil? (get-types-definitions (:content *model*)))))
+      )
+    (is (nil? (get-types-definitions (:content *model*))))
+    )
+
+  (testing "has type definition?"
+    (binding [*model* xmlModel]
+      (is (true? (has-type-definition? "void")))
+      (is (false? (has-type-definition? "typeThatIsNotThere")))
+      )
+    )
+
+  (testing "get type definition with lang as3"
+    (binding [*model* xmlModel *lang* "as3"]
+      (is (not (nil? (get-type-definition "void"))))
+      (is (= "void" (get-type-definition "void")))
+      (is (= "Void" (get-type-definition "void2")))
+      (is (= "Object" (get-type-definition "object")))
+      )
+    )
+
+  (testing "get type definition with lang java"
+    (binding [*model* xmlModel *lang* "java"]
+      (is (not (nil? (get-type-definition "void"))))
+      (is (= "void" (get-type-definition "void")))
+      (is (= "Void" (get-type-definition "void2")))
+      (is (= "Map" (get-type-definition "object")))
+      )
+    )
+  )
+

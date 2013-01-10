@@ -1,5 +1,6 @@
 (ns modler.typeUtil
   (:import (java.io ByteArrayInputStream))
+  (:import (javax.xml.parsers.SAXParserFactorySAXParserFactory))
   (:require [clojure.string :refer (split join lower-case)]
             [clojure.zip :as zip]
             [clojure.xml :as xml]
@@ -7,21 +8,32 @@
             [clojure.pprint :refer :all ]
             [clojure.set :refer (difference)] :verbose ))
 
+(def ^:dynamic *lang* "*")
+(def ^:dynamic *model*)
+
 ;;move this function
 (defn get-struct-map [xml]
   (if-not (empty? xml)
     (let [stream (ByteArrayInputStream. (.getBytes (.trim xml)))]
       (xml/parse stream))))
 
-(def ^:dynamic *lang* "as3")
-(def ^:dynamic *model*)
 
-(def types (zip/xml-zip (get-struct-map (slurp "model/types.xml"))))
+;;(def types (zip/xml-zip (get-struct-map (slurp "model/types.xml"))))
 
 (defn filterTag
   "filter model for specifig tag"
   [tag, model]
-  (filter #(= tag (:tag %1)) model)
+  (let [lang-value *lang*]
+    (filter #(and (= tag (:tag %1))
+               (if (contains? (:attrs %1) :lang )
+                 (let [type-lang-value (:lang (:attrs %1))]
+                   (or (= type-lang-value lang-value) (= type-lang-value "*"))
+                   )
+                 '(true)
+                 )
+               ) model)
+    )
+
   )
 
 (defn pack-list
@@ -78,10 +90,45 @@
     )
   )
 
+(defn get-types-definitions
+  [model]
+  (if (not (nil? model))
+    (let [types (first (filterTag :types model))]
+      (if (or (not (nil? types)) (not (empty? types)))
+        (zip/xml-zip types)
+        )
+      )
+    )
+  )
+
+(defn has-type-definition?
+  [type]
+  (let [types (get-types-definitions (:content *model*))]
+    (if (nil? types)
+      false
+      (not (nil? (zf/xml1-> types :type [(zf/attr= :name type)])))
+      )
+    )
+  )
+
+(defn get-type-definition
+  [type]
+  (let [lang-value *lang*
+        model-value *model*
+        types (get-types-definitions (:content model-value))
+        typeCheck #(zf/xml1-> types :type [(zf/attr= :name type)] :target [(zf/attr= :lang %1)] (zf/attr :value ))]
+    (if (not (nil? (typeCheck lang-value)))
+      (typeCheck lang-value)
+      (typeCheck "*")
+      )
+    )
+  )
+
 (defn getTypeComponents
   "returns type components classNamespace and className"
   ([type]
-    (getTypeComponents type true))
+    (getTypeComponents type true)
+    )
   ([type lookupType]
     (if (re-find #"\." type)
       (do
@@ -90,16 +137,24 @@
            :name (peek nameComponents)}
           )
         )
-
-      (if (and (= type (lower-case type)) (true? lookupType))
-        (do
-          (let [newType (zf/xml1-> types :type [(zf/attr= :name type)] :target [(zf/attr= :lang *lang*)] (zf/attr :value ))]
-            ;;(println newType type *lang*)
-            (getTypeComponents newType false)
+      (do
+        (if (and (true? lookupType)
+              (= type (lower-case type))
+              (bound? #'*lang*)
+              (has-type-definition? type))
+          (do
+            (let [newType (get-type-definition type)]
+              (if (nil? newType)
+                (getTypeComponents type false)
+                (getTypeComponents newType false)
+                )
+              )
+            )
+          (do
+            {:namespace ""
+             :name type}
             )
           )
-        {:namespace ""
-         :name type}
         )
       )
     )
@@ -300,7 +355,7 @@
    :package (get-type-namespace (:attrs model))
    :super-types (pack-list (get-extends-types model))
    :super-types? (extends-type? model)
-
+   :generate-type (:tag model)
    :imports (get-imports model)
 
    :properties (pack-list (get-properties model))
@@ -318,9 +373,11 @@
 (defn get-class
   "returns a class object map"
   [model]
+
   (merge
     (get-base-object model)
     {:implements? (implements-iface? model)
-     :implements (pack-list (get-implemented-interfaces model))}
+     :implements (pack-list (get-implemented-interfaces model))
+     }
     )
   )

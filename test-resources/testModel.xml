@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE model SYSTEM "http://www.modeler.tslarusso.de/generator.dtd">
-<model xmlns="http://www.modeler.tslarusso.de/modelerSchema"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.modeler.tslarusso.de/modeler.xsd">
+<model>
 	<types>
 		<type name="void">
-			<target lang="java" value="void"/>
-			<target lang="as3" value="void"/>
+			<target value="void"/>
+		</type>
+		<type name="void2">
+			<target value="Void"/>
 		</type>
 		<type name="object">
 			<target lang="java" value="Map"/>
 			<target lang="as3" value="Object"/>
+			<target lang="as3" value="object"/>
 		</type>
 		<type name="objectarray">
 			<target lang="java" value="Object[]"/>
