@@ -101,14 +101,38 @@
     )
   )
 
-(deftest test-generate-type
-  (testing "generate type"
+(deftest test-generate-type-source
+  (testing "generate type source"
     (let [model (load-model "test-resources/test-model-generate-type.xml")
           classes (get-classes model)]
-      (is (string? (generate-type (first classes) "templates/" "as3")))
-      (is (= "test as3 class: NormalClass" (generate-type (first classes) "templates/" "as3")))
-      (is (= "test java class: NormalClass" (generate-type (first classes) "templates/" "java")))
-      (is (= "test class: NormalClass" (generate-type (first classes) "templates/")))
+      (is (seq? (generate-type-source (first classes) "test-resources/templates/" "as3")))
+      (is (map? (first (generate-type-source (first classes) "test-resources/templates/" "as3"))))
+      (is (= "test as3 class: NormalClass" (:source (first (generate-type-source (first classes) "test-resources/templates/" "as3")))))
+      (is (= "test java class: NormalClass" (:source (first (generate-type-source (first classes) "test-resources/templates/" "java")))))
+      (is (= "test obj-c header class: NormalClass" (:source (first (generate-type-source (first classes) "test-resources/templates/" "obj-c")))))
+      (is (= "test class: NormalClass" (:source (first (generate-type-source (first classes) "test-resources/templates/")))))
+      (is (thrown? Exception (generate-type-source (first classes) "fault-base-dir/templates/")))
+      )
+    )
+  )
+
+(deftest test-get-type-source-file-path
+  (testing "get type spurce file path"
+    (let [model (load-model "test-resources/test-model-get-type-source-file-path.xml")
+          classes (into [] (get-classes model))]
+      (is (= (get-type-source-file-path (classes 0) "test-output/" "as") "test-output/com/example/Example.as"))
+      (is (= (get-type-source-file-path (classes 1) "test-output/" "class") "test-output/com/example/model/ExampleModel.class"))
+      (is (= (get-type-source-file-path (classes 2) "test-output/" "as") "test-output/com/example/view/ExampleView.as"))
+      (is (= (get-type-source-file-path (classes 3) "test-output/" "h") "test-output/com/example/controller/ExampleController.h"))
+      )
+    )
+  )
+
+(deftest test-generate
+  (testing "generate model as3"
+    (let [status (generate "test-resources/test-model-generate.xml" ["obj-c"] "test-resources/templates/" "test-output/")]
+      ;;(is (true? status))
+      (pprint status)
       )
     )
   )

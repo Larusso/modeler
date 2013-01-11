@@ -1,0 +1,45 @@
+![{:extension "as"}]
+package {{package}}
+{
+	{{#imports}}
+    import {{namespace}}.{{name}};
+	{{/imports}}
+
+	public interface {{type-name}}{{#super-types?}} extends {{super-types.first.name}}{{/super-types?}}{{#implements}} implements {{implements.first.name}}{{#implements.rest}}, {{name}}{{/implements.rest}}{{/implements?}}
+	{
+		{{#properties?}}
+		///////////////////////////////////////////////
+		//  properties
+		//////////////////////////////////////////////
+
+		{{/properties?}}
+
+		{{#properties.all}}
+		//---------------------------------------------
+		//  {{name}}
+		//---------------------------------------------
+
+		function get {{name}}():{{#type}}{{name}}{{/type}};
+
+		function set {{name}}(value:{{#type}}{{name}}{{/type}}):void;
+
+        {{/properties.all}}
+
+		{{#methods?}}
+		///////////////////////////////////////////////
+		//  methods
+		///////////////////////////////////////////////
+
+		{{/methods?}}
+
+		{{#methods.all}}
+		//---------------------------------------------
+		//  {{name}}
+		//---------------------------------------------
+
+		function {{name}}( {{#params}}{{#first}}{{name}}:{{#type}}{{name}}{{/type}}{{/first}}{{#rest}}, {{name}}:{{#type}}{{name}}{{/type}}{{/rest}}{{/params}} ):{{#returns}}{{name}}{{/returns}};
+
+		{{/methods.all}}
+
+	}
+}

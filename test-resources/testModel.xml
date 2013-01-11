@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE model SYSTEM "http://www.modeler.tslarusso.de/generator.dtd">
 <model>
+
 	<types>
 		<type name="void">
 			<target value="void"/>

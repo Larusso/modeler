@@ -2,6 +2,7 @@
 /lib
 /classes
 /checkouts
+/test-output
 pom.xml
 *.jar
 *.class
