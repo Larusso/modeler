@@ -2,19 +2,28 @@
   (:gen-class )
   (:require [clojure.string :refer (split)]
             [clojure.tools.cli :refer (cli)]
-            [modler.core :as modler] :verbose ))
+            [modler.core :as modler]))
 
-(defn run
-  [{verbose :verbose
-    output :output
-    lang :languages
-    templatePath :templatePath
-    :as options} model-file]
+(defn print-result
+  [result langs verbose]
 
-  (let [model (modler/load-model model-file)
-        types-by-lang (map #(concat (modler/get-interfaces model %1) (modler/get-classes model %1)) lang)]
-
-    )
+  (map
+    (fn [result lang]
+      (println (format "----------------- %s --------------------" lang))
+      (when (true? verbose)
+        (doseq [result-obj result]
+          (println (:file result-obj) (if (true? (:status result-obj)) "ok" "fault"))
+          )
+        (println "---------------------------------------------------")
+        )
+      (println (format "Entities created: %d ok: %d faults: %d"
+                 (count result)
+                 (count (filter #(true? (:status %1)) result))
+                 (count (filter #(false? (:status %1)) result))
+                 )
+        )
+      )
+    result langs)
   )
 
 (defn -main "Application entry point" [& args]
@@ -32,8 +41,11 @@
       (println banner)
       (System/exit 0))
 
-    (println options)
-    (println args)
-    (modler/generate (merge options {:model-path (first args)}))
+    (try
+      (print-result (modler/generate (merge options {:model-path (first args)})) (:languages options) (:verbose options))
+      (catch Exception e
+        (println "ERROR: " (.getMessage e))
+        )
+      )
     )
   )

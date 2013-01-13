@@ -109,8 +109,9 @@
       (is (map? (first (generate-type-source (first classes) "test-resources/templates/" "as3"))))
       (is (= "test as3 class: NormalClass" (:source (first (generate-type-source (first classes) "test-resources/templates/" "as3")))))
       (is (= "test java class: NormalClass" (:source (first (generate-type-source (first classes) "test-resources/templates/" "java")))))
-      (is (= "test obj-c header class: NormalClass" (:source (first (generate-type-source (first classes) "test-resources/templates/" "obj-c")))))
       (is (= "test class: NormalClass" (:source (first (generate-type-source (first classes) "test-resources/templates/")))))
+      (is (= "test obj-c header class: NormalClass" (:source (first (generate-type-source (first classes) "test-resources/templates/" "obj-c")))))
+      (is (= "test obj-c impl class: NormalClass" (:source ((into [] (generate-type-source (first classes) "test-resources/templates/" "obj-c")) 1))))
       (is (thrown? Exception (generate-type-source (first classes) "fault-base-dir/templates/")))
       )
     )
@@ -120,19 +121,22 @@
   (testing "get type spurce file path"
     (let [model (load-model "test-resources/test-model-get-type-source-file-path.xml")
           classes (into [] (get-classes model))]
-      (is (= (get-type-source-file-path (classes 0) "test-output/" "as") "test-output/com/example/Example.as"))
-      (is (= (get-type-source-file-path (classes 1) "test-output/" "class") "test-output/com/example/model/ExampleModel.class"))
-      (is (= (get-type-source-file-path (classes 2) "test-output/" "as") "test-output/com/example/view/ExampleView.as"))
-      (is (= (get-type-source-file-path (classes 3) "test-output/" "h") "test-output/com/example/controller/ExampleController.h"))
+      (is (= (get-type-source-file-path {:model (classes 0) :output-path "test-output/" :extension "as" :lang "as3"}) "test-output/as3/com/example/Example.as"))
+      (is (= (get-type-source-file-path {:model (classes 1) :output-path "test-output/" :extension "class" :lang "java"}) "test-output/java/com/example/model/ExampleModel.class"))
+      (is (= (get-type-source-file-path {:model (classes 2) :output-path "test-output/" :extension "as" :lang "as3"}) "test-output/as3/com/example/view/ExampleView.as"))
+      (is (= (get-type-source-file-path {:model (classes 3) :output-path "test-output/" :extension "h" :lang "obj-c"}) "test-output/obj-c/com/example/controller/ExampleController.h"))
       )
     )
   )
 
 (deftest test-generate
   (testing "generate model as3"
-    (let [status (generate "test-resources/test-model-generate.xml" ["obj-c"] "test-resources/templates/" "test-output/")]
-      ;;(is (true? status))
-      (pprint status)
+    (let [status (generate {:model-path "test-resources/test-model-generate.xml"
+                            :languages ["obj-c" "as3"]
+                            :templatePath "test-resources/templates/" :output "test-output/"})]
+
+      ;;check if status is ok for all
+      (is (map (partial every? #(true? (:status %1))) status))
       )
     )
   )

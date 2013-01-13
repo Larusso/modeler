@@ -6,7 +6,7 @@
             [clojure.xml :as xml]
             [clojure.data.zip.xml :as zf]
             [clojure.pprint :refer :all ]
-            [clojure.set :refer (difference)] :verbose ))
+            [clojure.set :refer (difference)]))
 
 (def ^:dynamic *lang* "*")
 (def ^:dynamic *model*)

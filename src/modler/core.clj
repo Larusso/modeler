@@ -7,7 +7,7 @@
             [modler.typeUtil :as typeUtil]
             [clojure.pprint :refer :all ]
             [clojure.java.io :refer :all ]
-            [clostache.parser :as clostache] :verbose ))
+            [clostache.parser :as clostache]))
 
 (defn getClassObject
   "creates class object for generator"
@@ -65,11 +65,11 @@
     (let [template-file-path (str template-path (get-template-name (:generate-type model) lang)) f (File. template-file-path)]
       (if (.isFile f)
         (do
-          (map #(do (println %1) (merge {:source (clojure.string/replace %1 #"^\!\[(.*?)\]\s" "")}
-                                   (load-string ((re-find #"^\!\[(.*?)\]\s" %1) 1))))
+          (map #(merge {:source (clojure.string/replace %1 #"^\!\[(.*?)\]\s" "")}
+                  (load-string ((re-find #"^\!\[(.*?)\]\s" %1) 1)))
             (split
               (clostache/render (slurp (str template-path (get-template-name (:generate-type model) lang))) model)
-              #"\#\[FILE_BREAK\]\s")
+              #"\s\#\[FILE_BREAK\]\s")
             ))
         (throw (Exception. (format "Error: Missing template: %s" template-file-path)))
         )
@@ -82,21 +82,26 @@
 
 (defn get-type-source-file-path
   "returns a path for the specific extension"
-  [model output-path extension]
-  (let [path (join "/" (split (:package model) #"\."))]
-    (str output-path path "/" (:type-name model) "." extension)
+  [{:keys [model extension lang output-path]}]
+  (let [path (join "/" (split (:package model) #"\."))
+        lang-path (if (not= lang "*") (str lang "/") "")]
+    (str output-path lang-path path "/" (:type-name model) "." extension)
     )
   )
 
 (defn saveSource
-  [{model :model
-    extension :extension
-    source :source
-    output-path :output-path}]
-
-  (let [file-path (get-type-source-file-path model output-path extension)]
-    (make-parents (file file-path))
-    (spit file-path source)
+  [{source :source :as p}]
+  (let [file-path (get-type-source-file-path p)]
+    (try
+      (do
+        (make-parents (file file-path))
+        (spit file-path source)
+        {:file file-path :status true}
+        )
+      (catch Exception e
+        {:file file-path :status false :error (.getMessage e)}
+        )
+      )
     )
   )
 
@@ -106,17 +111,21 @@
     template-path :template-path
     output-path :output-path :as p}]
 
-  (map #(do
-          (let [source-data (generate-type-source %1 template-path lang)
-                source (map (fn [source-object]
-                              (merge source-object p {:model %1})
-                              ) source-data
-              )
-                ]
-            ;;source
-            (map saveSource source)
-            )
-          ) types)
+
+  (mapcat #(do
+             (let [source-data (generate-type-source %1 template-path lang)
+                   source
+                   (map
+                     (fn [source-object]
+                       (merge source-object p {:model %1})
+                       ) source-data
+                     )
+                   ]
+
+               (map saveSource source)
+               )
+             ) types)
+
   )
 
 (defn generate
@@ -125,7 +134,6 @@
     template-path :templatePath
     output-path :output}]
   (let [modelData (load-model model-path)]
-    (println "generate" langs)
     (map generate-source
       (map
         #(do
