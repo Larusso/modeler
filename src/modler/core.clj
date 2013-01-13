@@ -44,8 +44,13 @@
   "returns a list with all the interfaces in the model"
   [model lang]
   (binding [typeUtil/*lang* lang typeUtil/*model* model]
-    (map typeUtil/get-class (typeUtil/filterTag :iface (:content model)))
+    (map typeUtil/get-interface (typeUtil/filterTag :iface (:content model)))
     )
+  )
+
+(defn get-types
+  [model lang]
+  (concat (get-classes model lang) (get-interfaces model lang))
   )
 
 (defn get-template-name
@@ -125,26 +130,13 @@
                (map saveSource source)
                )
              ) types)
-
   )
 
 (defn generate
-  [{model-path :model-path
-    langs :languages
-    template-path :templatePath
-    output-path :output}]
-  (let [modelData (load-model model-path)]
-    (map generate-source
-      (map
-        #(do
-           {:lang %1
-            :template-path template-path
-            :output-path output-path
-            :types (concat (get-classes modelData %1)
-                     (get-interfaces modelData %1)
-                     )}
-           )
-        langs)
-      )
+  [{:keys [model-path languages template-path output-path] :as options}]
+  (let [modelData (load-model model-path)
+        types-by-lang (map #(merge options {:lang %1 :types (get-types modelData %1)})
+      languages)]
+    (map generate-source types-by-lang)
     )
   )
