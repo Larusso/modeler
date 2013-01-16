@@ -2,28 +2,47 @@
   (:gen-class )
   (:require [clojure.string :refer (split)]
             [clojure.tools.cli :refer (cli)]
+            [clojure.pprint :refer :all ]
             [modler.core :as modler]))
 
-(defn print-result
-  [result langs verbose]
+(defn containsError?
+  [coll]
+  (contains? coll :error )
+  )
 
-  (map
-    (fn [result lang]
+(defn print-result
+  [results langs verbose]
+  (dotimes [i (count results)]
+    (let [result ((into [] results) i)
+          lang ((into [] langs) i)
+          errors (distinct (filter containsError? result))
+          generated (filter (complement containsError?) result)]
       (println (format "----------------- %s --------------------" lang))
-      (when (true? verbose)
-        (doseq [result-obj result]
-          (println (:file result-obj) (if (true? (:status result-obj)) "ok" "fault"))
+      (when (and (true? verbose) (not (empty? generated)))
+        (doseq [result-obj generated]
+          (println (:generated result-obj))
           )
         (println "---------------------------------------------------")
         )
-      (println (format "Entities created: %d ok: %d faults: %d"
-                 (count result)
-                 (count (filter #(true? (:status %1)) result))
-                 (count (filter #(false? (:status %1)) result))
+
+      (println "")
+      (println (format "Entities generated: %d errors: %d"
+                 (count generated)
+                 (count errors)
                  )
         )
+
+      (when-not (empty? errors)
+        (println "")
+        (println "----------------- Errors --------------------")
+        (doseq [error errors]
+          (println (:error error))
+          )
+        )
+      (println "")
       )
-    result langs)
+    )
+
   )
 
 (defn -main "Application entry point" [& args]
@@ -32,8 +51,8 @@
 
   (let [[options args banner] (cli args
     ["-lang" "--languages" "comma separated list of languages to generate example 'as3,java,objc'" :parse-fn #(split % #",|;|:") :default "*"]
-    ["-t" "--templatePath" "Path to template files" :default "./templates/"]
-    ["-o" "--output" "The output path" :default "./generated/"]
+    ["-t" "--template-path" "Path to template files" :default "./templates/"]
+    ["-o" "--output-path" "The output path" :default "./generated/"]
     ["-v" "--[no-]verbose" :default false]
     ["-h" "--help" "Show help" :default false :flag true])]
 
@@ -41,11 +60,6 @@
       (println banner)
       (System/exit 0))
 
-    (try
-      (print-result (modler/generate (merge options {:model-path (first args)})) (:languages options) (:verbose options))
-      (catch Exception e
-        (println "ERROR: " (.getMessage e))
-        )
-      )
+    (print-result (modler/generate (merge options {:model-path (first args)})) (:languages options) (:verbose options))
     )
   )

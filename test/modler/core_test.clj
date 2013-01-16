@@ -112,7 +112,6 @@
       (is (= "test class: NormalClass" (:source (first (generate-type-source (first classes) "test-resources/templates/")))))
       (is (= "test obj-c header class: NormalClass" (:source (first (generate-type-source (first classes) "test-resources/templates/" "obj-c")))))
       (is (= "test obj-c impl class: NormalClass" (:source ((into [] (generate-type-source (first classes) "test-resources/templates/" "obj-c")) 1))))
-      (is (thrown? Exception (generate-type-source (first classes) "fault-base-dir/templates/")))
       )
     )
   )

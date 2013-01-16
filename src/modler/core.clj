@@ -67,16 +67,20 @@
 (defn generate-type-source
   ([model template-path lang]
 
-    (let [template-file-path (str template-path (get-template-name (:generate-type model) lang)) f (File. template-file-path)]
-      (if (.isFile f)
-        (do
-          (map #(merge {:source (clojure.string/replace %1 #"^\!\[(.*?)\]\s" "")}
-                  (load-string ((re-find #"^\!\[(.*?)\]\s" %1) 1)))
-            (split
-              (clostache/render (slurp (str template-path (get-template-name (:generate-type model) lang))) model)
-              #"\s\#\[FILE_BREAK\]\s")
-            ))
-        (throw (Exception. (format "Error: Missing template: %s" template-file-path)))
+    (let [template-file-path (str template-path (get-template-name (:generate-type model) lang))
+          f (File. template-file-path)
+          reg #"^\!\[(.*?)\]\s"]
+      (if (and (.exists f) (.isFile f))
+        (map #(if (not (nil? (re-find reg %1)))
+                (merge {:source (clojure.string/replace %1 reg "")}
+                  (load-string ((re-find reg %1) 1)))
+                {:error (format "Error: missing template header in template: %s" template-file-path)}
+                )
+          (split
+            (clostache/render (slurp (str template-path (get-template-name (:generate-type model) lang))) model)
+            #"\s\#\[FILE_BREAK\]\s")
+          )
+        [{:error (format "Error: missing template: %s" template-file-path)}]
         )
       )
     )
@@ -95,39 +99,40 @@
   )
 
 (defn saveSource
-  [{source :source :as p}]
-  (let [file-path (get-type-source-file-path p)]
+  [{source :source :as options}]
+  (let [file-path (get-type-source-file-path options)]
     (try
       (do
         (make-parents (file file-path))
         (spit file-path source)
-        {:file file-path :status true}
+        {:generated file-path}
         )
       (catch Exception e
-        {:file file-path :status false :error (.getMessage e)}
+        {:error (format "Error saving file: %s" file-path)}
         )
       )
     )
   )
 
-(defn generate-source
-  [{lang :lang
-    types :types
-    template-path :template-path
-    output-path :output-path :as p}]
+(defn containsError?
+  [coll]
+  (contains? coll :error )
+  )
 
+(defn generate-source
+  [{:keys [lang template-path types output-path]
+    :as options}]
 
   (mapcat #(do
              (let [source-data (generate-type-source %1 template-path lang)
-                   source
-                   (map
-                     (fn [source-object]
-                       (merge source-object p {:model %1})
-                       ) source-data
-                     )
-                   ]
-
-               (map saveSource source)
+                   error (filter containsError? source-data)
+                   passed (filter (complement containsError?) source-data)
+                   source (map (partial merge options {:model %1}) passed)
+                   generated (map saveSource source)]
+               (if-not (empty? error)
+                 (concat generated error)
+                 generated
+                 )
                )
              ) types)
   )
