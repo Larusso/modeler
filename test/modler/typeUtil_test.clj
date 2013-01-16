@@ -357,7 +357,7 @@
 (defn is-base-object?
   [item]
   (and
-    (contains? item :generate-type )
+    (contains? item :template-id )
     (contains? item :type-name )
     (contains? item :package )
     (contains? item :super-types )

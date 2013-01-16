@@ -350,7 +350,7 @@
    :package (get-type-namespace (:attrs model))
    :super-types (pack-list (get-extends-types model))
    :super-types? (extends-type? model)
-   :generate-type (subs (str (:tag model)) 1)
+   :template-id (:templateId (:attrs model))
    :imports (get-imports model)
 
    :properties (pack-list (get-properties model))

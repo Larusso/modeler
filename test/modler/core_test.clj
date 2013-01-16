@@ -14,7 +14,7 @@
 (defn is-base-object?
   [item]
   (and
-    (contains? item :generate-type )
+    (contains? item :template-id )
     (contains? item :type-name )
     (contains? item :package )
     (contains? item :super-types )
@@ -43,7 +43,7 @@
       (is (= 5 (count classes)))
       (is (true? (every? is-class-object? classes)))
       (is (true? (every? is-base-object? classes)))
-      (is (true? (every? #(= (:generate-type %1) "class") classes)))
+      (is (true? (every? #(= (:template-id %1) "class") classes)))
       )
     )
 
@@ -54,7 +54,7 @@
       (is (= 4 (count classes)))
       (is (true? (every? is-class-object? classes)))
       (is (true? (every? is-base-object? classes)))
-      (is (true? (every? #(= (:generate-type %1) "class") classes)))
+      (is (true? (every? #(= (:template-id %1) "class") classes)))
       )
     )
 
@@ -65,7 +65,7 @@
       (is (= 2 (count classes)))
       (is (true? (every? is-class-object? classes)))
       (is (true? (every? is-base-object? classes)))
-      (is (true? (every? #(= (:generate-type %1) "class") classes)))
+      (is (true? (every? #(= (:template-id %1) "class") classes)))
       )
     )
   )
@@ -77,7 +77,7 @@
       (is (not (nil? interfaces)))
       (is (= 5 (count interfaces)))
       (is (true? (every? is-base-object? interfaces)))
-      (is (true? (every? #(= (:generate-type %1) "iface") interfaces)))
+      (is (true? (every? #(= (:template-id %1) "iface") interfaces)))
       )
     )
   )
@@ -90,6 +90,8 @@
 
     (is (= "java.class.mustache" (get-template-name "class" "java")))
     (is (= "java.iface.mustache" (get-template-name "iface" "java")))
+
+    (is (= "java.knips.mustache" (get-template-name "knips" "java")))
     )
 
   (testing "get template name without lang value"

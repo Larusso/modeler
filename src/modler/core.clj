@@ -67,7 +67,7 @@
 (defn generate-type-source
   ([model template-path lang]
 
-    (let [template-file-path (str template-path (get-template-name (:generate-type model) lang))
+    (let [template-file-path (str template-path (get-template-name (:template-id model) lang))
           f (File. template-file-path)
           reg #"^\!\[(.*?)\]\s"]
       (if (and (.exists f) (.isFile f))
@@ -77,7 +77,7 @@
                 {:error (format "Error: missing template header in template: %s" template-file-path)}
                 )
           (split
-            (clostache/render (slurp (str template-path (get-template-name (:generate-type model) lang))) model)
+            (clostache/render (slurp (str template-path (get-template-name (:template-id model) lang))) model)
             #"\s\#\[FILE_BREAK\]\s")
           )
         [{:error (format "Error: missing template: %s" template-file-path)}]
