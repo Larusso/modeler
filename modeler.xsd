@@ -19,6 +19,7 @@
 			<xs:element type="typesType" name="types" minOccurs="0" maxOccurs="1"/>
 			<xs:element type="ifaceType" name="iface" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element type="classType" name="class" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element type="entityType" name="entity" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:any minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:group>
@@ -37,11 +38,20 @@
 		</xs:sequence>
 	</xs:group>
 
+	<xs:complexType name="entityType">
+		<xs:sequence maxOccurs="unbounded">
+			<xs:group ref="classMembers-group"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="type-lang-attrgroup"/>
+		<xs:attribute type="xs:string" name="templateId" use="required"/>
+	</xs:complexType>
+
 	<xs:complexType name="ifaceType">
 		<xs:sequence maxOccurs="unbounded">
 			<xs:group ref="classMembers-group"/>
 		</xs:sequence>
 		<xs:attributeGroup ref="type-lang-attrgroup"/>
+		<xs:attribute type="xs:string" name="templateId" default="iface"/>
 	</xs:complexType>
 
 	<xs:complexType name="classType">
@@ -50,6 +60,7 @@
 			<xs:group ref="classMembers-group"/>
 		</xs:sequence>
 		<xs:attributeGroup ref="type-lang-attrgroup"/>
+		<xs:attribute type="xs:string" name="templateId" default="class"/>
 	</xs:complexType>
 
 	<xs:complexType name="propertyType">

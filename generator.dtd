@@ -1,17 +1,25 @@
 <?xml version='1.0' encoding='UTF-8'?>
 		<!ENTITY % lang "lang CDATA '*'">
 
-		<!ELEMENT model (class|iface|include|types)*>
+		<!ELEMENT model (class|iface|entity|include|types)*>
+
+		<!ELEMENT entity (implements|property|method|extends)*>
+		<!ATTLIST entity
+				%lang;
+				type CDATA #REQUIRED
+				templateId CDATA #REQUIRED>
 
 		<!ELEMENT class (implements|property|method|extends)*>
 		<!ATTLIST class
 				%lang;
-				type CDATA #REQUIRED>
+				type CDATA #REQUIRED
+				templateId CDATA "class">
 
 		<!ELEMENT iface (property|method|extends)*>
 		<!ATTLIST iface
 				%lang;
-				type CDATA #REQUIRED>
+				type CDATA #REQUIRED
+				templateId CDATA "iface">
 
 		<!ELEMENT property EMPTY>
 		<!ATTLIST property
