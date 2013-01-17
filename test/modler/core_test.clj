@@ -68,6 +68,20 @@
       (is (true? (every? #(= (:template-id %1) "class") classes)))
       )
     )
+
+  (testing "get classes with custom template id"
+    (let [model (load-model "test-resources/test-template-id.xml")
+          classes (get-classes model)]
+      (is (not (nil? classes)))
+      (is (= 3 (count classes)))
+      (is (true? (every? is-class-object? classes)))
+      (is (true? (every? is-base-object? classes)))
+      (is (false? (every? #(= (:template-id %1) "class") classes)))
+      (is (true? (some #(= (:template-id %1) "class1") classes)))
+      (is (true? (some #(= (:template-id %1) "class2") classes)))
+      (is (true? (some #(= (:template-id %1) "class3") classes)))
+      )
+    )
   )
 
 (deftest test-get-interfaces
@@ -78,6 +92,19 @@
       (is (= 5 (count interfaces)))
       (is (true? (every? is-base-object? interfaces)))
       (is (true? (every? #(= (:template-id %1) "iface") interfaces)))
+      )
+    )
+
+  (testing "get interfaces with custom template id"
+    (let [model (load-model "test-resources/test-template-id.xml")
+          interfaces (get-interfaces model)]
+      (is (not (nil? interfaces)))
+      (is (= 3 (count interfaces)))
+      (is (true? (every? is-base-object? interfaces)))
+      (is (false? (every? #(= (:template-id %1) "iface") interfaces)))
+      (is (true? (some #(= (:template-id %1) "iface1") interfaces)))
+      (is (true? (some #(= (:template-id %1) "iface2") interfaces)))
+      (is (true? (some #(= (:template-id %1) "iface3") interfaces)))
       )
     )
   )
@@ -114,6 +141,8 @@
       (is (= "test class: NormalClass" (:source (first (generate-type-source (first classes) "test-resources/templates/")))))
       (is (= "test obj-c header class: NormalClass" (:source (first (generate-type-source (first classes) "test-resources/templates/" "obj-c")))))
       (is (= "test obj-c impl class: NormalClass" (:source ((into [] (generate-type-source (first classes) "test-resources/templates/" "obj-c")) 1))))
+      (is (contains? (first (generate-type-source (first classes) "fault-base-dir/templates/")) :error ))
+      (is (contains? (first (generate-type-source (first classes) "test-resources/templates/" "fail")) :error ))
       )
     )
   )

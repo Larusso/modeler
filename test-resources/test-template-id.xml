@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE model SYSTEM "http://www.modeler.tslarusso.de/generator.dtd">
+<model xmlns="http://www.modeler.tslarusso.de/modelerSchema"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.modeler.tslarusso.de/modeler.xsd">
+
+	<class type="JavaTestClass" templateId="class1"/>
+	<class type="JavaTestClass2" templateId="class2"/>
+	<class type="JavaTestClass3" templateId="class3"/>
+
+	<iface type="JavaTestIface" templateId="iface1"/>
+	<iface type="JavaTestIface2" templateId="iface2"/>
+	<iface type="JavaTestIface3" templateId="iface3"/>
+</model>

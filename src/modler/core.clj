@@ -42,9 +42,13 @@
 
 (defn get-interfaces
   "returns a list with all the interfaces in the model"
-  [model lang]
-  (binding [typeUtil/*lang* lang typeUtil/*model* model]
-    (map typeUtil/get-interface (typeUtil/filterTag :iface (:content model)))
+  ([model lang]
+    (binding [typeUtil/*lang* lang typeUtil/*model* model]
+      (map typeUtil/get-interface (typeUtil/filterTag :iface (:content model)))
+      )
+    )
+  ([model]
+    (get-interfaces model "*")
     )
   )
 
