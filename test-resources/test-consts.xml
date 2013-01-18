@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE model SYSTEM "http://www.modeler.tslarusso.de/generator.dtd">
+<model xmlns="http://www.modeler.tslarusso.de/modelerSchema"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.modeler.tslarusso.de/modeler.xsd">
+
+	<class type="ConstClass">
+		<const name="const1" type="string">CONST_1</const>
+		<const name="const2" type="int">42</const>
+		<const name="const3" type="boolean">false</const>
+	</class>
+</model>

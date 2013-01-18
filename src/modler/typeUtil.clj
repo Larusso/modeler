@@ -17,9 +17,6 @@
     (let [stream (ByteArrayInputStream. (.getBytes (.trim xml)))]
       (xml/parse stream))))
 
-
-;;(def types (zip/xml-zip (get-struct-map (slurp "model/types.xml"))))
-
 (defn filterTag
   "filter model for specifig tag"
   [tag, model]
@@ -257,6 +254,30 @@
   [model]
   (> (count (get-properties model)) 0)
   )
+
+;;const
+
+(defn createConstObject
+  [const-data]
+  {
+    :name (zf/xml1-> const-data (zf/attr :name ))
+    :type (getTypeComponents (zf/xml1-> const-data (zf/attr :type )))
+    :value (zf/xml1-> const-data zf/text)
+    }
+  )
+
+(defn get-consts
+  [model]
+  (let [zipped-model (zip/xml-zip model)]
+    (map createConstObject (zf/xml-> zipped-model :const ))
+    )
+  )
+
+(defn consts?
+  [model]
+  (> (count (get-consts model)) 0)
+  )
+
 ;;params
 
 (defn params?
@@ -373,6 +394,8 @@
     (get-base-object model)
     {:implements? (implements-iface? model)
      :implements (pack-list (get-implemented-interfaces model))
+     :consts? (consts? model)
+     :consts (pack-list (get-consts model))
      }
     )
   )

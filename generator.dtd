@@ -3,13 +3,13 @@
 
 		<!ELEMENT model (class|iface|entity|include|types)*>
 
-		<!ELEMENT entity (implements|property|method|extends)*>
+		<!ELEMENT entity (implements|property|method|extends|const)*>
 		<!ATTLIST entity
 				%lang;
 				type CDATA #REQUIRED
 				templateId CDATA #REQUIRED>
 
-		<!ELEMENT class (implements|property|method|extends)*>
+		<!ELEMENT class (implements|property|method|extends|const)*>
 		<!ATTLIST class
 				%lang;
 				type CDATA #REQUIRED
@@ -23,6 +23,12 @@
 
 		<!ELEMENT property EMPTY>
 		<!ATTLIST property
+				%lang;
+				name CDATA #REQUIRED
+				type CDATA #REQUIRED>
+
+		<!ELEMENT const (#PCDATA)>
+		<!ATTLIST const
 				%lang;
 				name CDATA #REQUIRED
 				type CDATA #REQUIRED>

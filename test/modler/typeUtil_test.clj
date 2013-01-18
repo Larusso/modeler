@@ -5,6 +5,7 @@
 
 (def xmlModel (get-struct-map (slurp "test-resources/testModel.xml")))
 (def xmlModel2 (get-struct-map (slurp "test-resources/testModel2.xml")))
+(def xmlModel3 (get-struct-map (slurp "test-resources/test-consts.xml")))
 
 (defn isType?
   ([type className]
@@ -248,6 +249,22 @@
     )
   )
 
+(deftest test-get-consts
+  (testing "get consts"
+    (binding [*model* xmlModel3 *lang* "as3"]
+      (let [class (get-class-by-name xmlModel3 "ConstClass")
+            check-method #(and (map? %) (contains? % :name ) (contains? % :value ) (contains? % :type ))]
+
+        (is (true? (consts? class)))
+        (is (not (nil? (get-consts class))))
+        (is (= 3 (count (get-consts class))))
+        (is (every? check-method (get-consts class)))
+        (is (= "CONST_1" (:value (first (get-consts class)))))
+        )
+      )
+    )
+  )
+
 (deftest test-implements-interfaces
   (testing "implements interfaces"
     (binding [*model* xmlModel *lang* "as3"]
@@ -375,6 +392,8 @@
   (and
     (contains? item :implements )
     (contains? item :implements? )
+    (contains? item :consts? )
+    (contains? item :consts )
     )
   )
 
