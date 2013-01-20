@@ -56,6 +56,7 @@
                     (concat (:content raw-model))
                     (filter #(not= :include (:tag %1)))
                     (into [])
+                    (distinct)
                     )
          }
         raw-model

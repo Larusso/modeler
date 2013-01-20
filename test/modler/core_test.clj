@@ -59,6 +59,13 @@
       (is (= 5 (count (:content test-model))))
       )
     )
+
+  (testing "load model with nested duplicate include statement"
+    (let [test-model (load-model "test-resources/test-model-nested-duplicate-includes.xml")]
+      (is (not (nil? test-model)))
+      (is (= 5 (count (:content test-model))))
+      )
+    )
   )
 
 (defn is-base-object?
