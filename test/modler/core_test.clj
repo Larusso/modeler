@@ -52,6 +52,13 @@
       (is (= 3 (count (:content test-model))))
       )
     )
+
+  (testing "load model with duplicate include statement"
+    (let [test-model (load-model "test-resources/test-model-duplicate-includes.xml")]
+      (is (not (nil? test-model)))
+      (is (= 5 (count (:content test-model))))
+      )
+    )
   )
 
 (defn is-base-object?

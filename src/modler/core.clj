@@ -44,6 +44,7 @@
                                            (typeUtil/filterTag :include )
                                            (map #(check-import-path (get-include-file-path (:path (:attrs %1)) file-path) load-chain))
                                            (filter #(not (nil? %1)))
+                                           (distinct)
                                            )
         )
           imports (get-model-includes raw-model)]
