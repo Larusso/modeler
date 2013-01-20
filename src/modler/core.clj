@@ -23,9 +23,47 @@
     )
   )
 
+(defn get-include-file-path
+  [include-path parent-file-path]
+  (join "/" (conj (pop (split parent-file-path #"/")) include-path))
+  )
+
+(defn check-import-path
+  [import-path load-chain]
+  (if (some #{import-path} load-chain)
+    nil
+    import-path
+    )
+  )
+
 (defn load-model
-  [file-path]
-  (typeUtil/get-struct-map (slurp file-path))
+  ([file-path load-chain]
+    (let [raw-model (typeUtil/get-struct-map (slurp file-path))
+          get-model-includes (fn [model] (->> model
+                                           (:content )
+                                           (typeUtil/filterTag :include )
+                                           (map #(check-import-path (get-include-file-path (:path (:attrs %1)) file-path) load-chain))
+                                           (filter #(not (nil? %1)))
+                                           )
+        )
+          imports (get-model-includes raw-model)]
+      (if-not (empty? imports)
+        {:tag (:tag raw-model)
+         :attrs (:attrs raw-model)
+         :content (->> imports
+                    (mapcat #(:content (load-model %1 (conj load-chain file-path))))
+                    (concat (:content raw-model))
+                    (filter #(not= :include (:tag %1)))
+                    (into [])
+                    )
+         }
+        raw-model
+        )
+      )
+    )
+  ([file-path]
+    (load-model file-path [])
+    )
   )
 
 (defn get-classes

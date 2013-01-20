@@ -2,14 +2,57 @@
   (:require [clojure.test :refer :all ]
             [modler.core :refer :all ]
             [clojure.pprint :refer :all ]
+            [clojure.zip :as zip]
+            [clojure.data.zip.xml :as zf]
             [modler.typeUtil :as typeUtil]))
 
-(quote
-  (deftest test-load-model
-    (testing "load test model"
-      (is (not (nil? (load-model "test-resources/testModel.xml"))))
+(deftest test-get-include-file-path
+  (testing "return model path from relative include"
+    (is (= "test-resources/test-model-includes-2.xml"
+          (get-include-file-path "test-model-includes-2.xml" "test-resources/test-model-includes-1.xml")))
+
+    (is (= "test-resources/test/test/test-model-includes-2.xml"
+          (get-include-file-path "test/test/test-model-includes-2.xml" "test-resources/test-model-includes-1.xml")))
+
+    )
+  )
+
+(deftest test-check-import-path
+  (testing "check against circular include"
+    (is (= "model1.xml" (check-import-path "model1.xml" [])))
+    (is (nil? (check-import-path "model1.xml" ["model1.xml" "model2.xml"])))
+    )
+  )
+
+(deftest test-load-model
+  (testing "load test model"
+    (is (not (nil? (load-model "test-resources/testModel.xml"))))
+    )
+
+  (testing "load model with imports"
+    (let [test-model (load-model "test-resources/test-model-includes-1.xml")]
+      (is (not (nil? test-model)))
+      ;;check the item length
+      (is (= 5 (count (:content test-model))))
       )
-    ))
+    )
+
+  (testing "load model with recursive imports"
+    (let [test-model (load-model "test-resources/test-model-recursive-includes.xml")]
+      (is (not (nil? test-model)))
+      ;;check the item length
+      (is (= 9 (count (:content test-model))))
+      )
+    )
+
+  (testing "load model with circular imports"
+    (let [test-model (load-model "test-resources/test-model-circular-includes-1.xml")]
+      (is (not (nil? test-model)))
+      ;;check the item length
+      (is (= 3 (count (:content test-model))))
+      )
+    )
+  )
 
 (defn is-base-object?
   [item]
