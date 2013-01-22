@@ -1,5 +1,5 @@
 (ns modler.core
-  (:import (java.io ByteArrayInputStream File))
+  (:import (java.io ByteArrayInputStream File FileNotFoundException))
   (:require [clojure.xml :as xml]
             [clojure.string :refer (split join)]
             [clojure.zip :as zip]
@@ -38,7 +38,15 @@
 
 (defn load-model
   ([file-path load-chain]
-    (let [raw-model (typeUtil/get-struct-map (slurp file-path))
+    (let [raw-model (try
+      (typeUtil/get-struct-map (slurp file-path))
+      (catch FileNotFoundException e
+        (throw (Exception. (format "File not found. Could not load model from %s" file-path)))
+        )
+      (catch Exception e
+        (throw (Exception. "Could not load model. Please provide valid xml model."))
+        )
+      )
           get-model-includes (fn [model] (->> model
                                            (:content )
                                            (typeUtil/filterTag :include )

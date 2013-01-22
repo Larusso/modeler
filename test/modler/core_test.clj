@@ -4,7 +4,8 @@
             [clojure.pprint :refer :all ]
             [clojure.zip :as zip]
             [clojure.data.zip.xml :as zf]
-            [modler.typeUtil :as typeUtil]))
+            [modler.typeUtil :as typeUtil])
+  (:import [java.io FileNotFoundException]))
 
 (deftest test-get-include-file-path
   (testing "return model path from relative include"
@@ -27,6 +28,8 @@
 (deftest test-load-model
   (testing "load test model"
     (is (not (nil? (load-model "test-resources/testModel.xml"))))
+    (is (thrown-with-msg? Exception #"File not found. Could not load model from" (load-model "test-resources/invalidFile.xml")))
+    (is (thrown-with-msg? Exception #"Could not load model. Please provide valid xml model." (load-model nil)))
     )
 
   (testing "load model with imports"
