@@ -55,8 +55,6 @@
     ["-lang" "--languages" "comma separated list of languages to generate example 'as3,java,objc'" :parse-fn #(split % #",|;|:") :default ["*"]]
     ["-t" "--template-path" "Path to template files" :default "./templates/"]
     ["-o" "--output-path" "The output path" :default "./generated/"]
-    ["-gm" "--generate-multiple" "generate multiple files" :default true :flag true]
-    ["-gs" "--generate-single" "generate all source in one file" :default false :flag true]
     ["-v" "--[no-]verbose" :default false]
     ["-h" "--help" "Show help" :default false :flag true])
         usage (clojure.string/replace banner #"Usage:" "usage: modler [options] [model PATH]")]
@@ -64,12 +62,6 @@
     (when (or (:help options))
       (println usage)
       (System/exit 0))
-
-    (when (and (false? (:generate-multiple options)) (false? (:generate-single options)))
-      (println "please select -gm or -gs or both.")
-      (println usage)
-      (System/exit 0)
-      )
 
     (try
       (println
