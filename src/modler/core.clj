@@ -172,21 +172,37 @@
   )
 
 (defn generate-source
-  [{:keys [lang template-path types output-path]
+  [{:keys [lang template-path types output-path generate-multiple generate-single]
     :as options}]
 
-  (mapcat #(do
-             (let [source-data (generate-type-source %1 template-path lang)
-                   error (filter containsError? source-data)
-                   passed (filter (complement containsError?) source-data)
-                   source (map (partial merge options {:model %1}) passed)
-                   generated (map saveSource source)]
-               (if-not (empty? error)
-                 (concat generated error)
-                 generated
-                 )
-               )
-             ) types)
+  (concat
+    (when generate-multiple
+      (mapcat #(do
+                 (let [source-data (generate-type-source %1 template-path lang)
+                       error (filter containsError? source-data)
+                       passed (filter (complement containsError?) source-data)
+                       source (map (partial merge options {:model %1}) passed)
+                       generated (map saveSource source)]
+                   (if-not (empty? error)
+                     (concat generated error)
+                     generated
+                     )
+                   )
+                 ) types)
+      )
+    (when generate-single
+      (let [source-data (generate-type-source {:template-id "single" :types types} template-path lang)
+            error (filter containsError? source-data)
+            passed (filter (complement containsError?) source-data)
+            source (map (partial merge options {:model {:type-name "Classes" :package ""}}) passed)
+            generated (map saveSource source)]
+        (if-not (empty? error)
+          (concat generated error)
+          generated
+          )
+        )
+      )
+    )
   )
 
 (defn generate
