@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE model SYSTEM "http://www.modeler.tslarusso.de/generator.dtd">
+<model xmlns="http://www.modeler.tslarusso.de/modelerSchema"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.modeler.tslarusso.de/modeler.xsd">
+
+
+	<iface type="IFace1">
+		<property name="property1" type="int"/>
+		<property name="property2" type="int"/>
+		<property name="property3" type="int"/>
+
+		<method returns="void" name="get1"/>
+		<method returns="void" name="get2"/>
+	</iface>
+
+	<class type="Class1">
+		<implements iface="IFace1"/>
+	</class>
+</model>

@@ -80,7 +80,7 @@
   "returns a list with all the classes in the model"
   ([model lang]
     (binding [typeUtil/*lang* lang typeUtil/*model* model]
-      (map typeUtil/get-class (typeUtil/filterTag :class (:content model)))
+      (doall (map typeUtil/get-class (typeUtil/filterTag :class (:content model))))
       )
     )
   ([model]
@@ -92,7 +92,7 @@
   "returns a list with all the interfaces in the model"
   ([model lang]
     (binding [typeUtil/*lang* lang typeUtil/*model* model]
-      (map typeUtil/get-interface (typeUtil/filterTag :iface (:content model)))
+      (doall (map typeUtil/get-interface (typeUtil/filterTag :iface (:content model))))
       )
     )
   ([model]
