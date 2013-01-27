@@ -35,6 +35,7 @@
 			<xs:element type="propertyType" name="property" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element type="methodType" name="method" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element type="constType" name="const" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element type="extendsType" name="decorates" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:any minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:group>

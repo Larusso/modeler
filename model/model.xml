@@ -32,4 +32,10 @@
 		<extends type="de.example.model.Class1"/>
 		<implements iface="de.example.interfaces.Interface1"/>
 	</class>
+
+	<class type="de.example.model.Class3">
+		<decorates type="de.example.model.Class1"/>
+		<implements iface="de.example.interfaces.Interface1"/>
+	</class>
+
 </model>
