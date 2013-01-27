@@ -27,4 +27,9 @@
 		<implements iface="de.example.interfaces.Interface1"/>
 		<implements iface="de.example.interfaces.Interface2"/>
 	</class>
+
+	<class type="de.example.model.Class2">
+		<extends type="de.example.model.Class1"/>
+		<implements iface="de.example.interfaces.Interface1"/>
+	</class>
 </model>
