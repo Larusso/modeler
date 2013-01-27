@@ -142,6 +142,17 @@
       (is (true? (some #(= (:template-id %1) "class3") classes)))
       )
     )
+
+  (testing "count methods and properties in returned classes"
+    (let [model (load-model "test-resources/test-model-class-implements-interface.xml")
+          classes (get-classes model)]
+      (is (not (nil? classes)))
+      (is (= 1 (count classes)))
+      (is (true? (:properties? (first classes))))
+      (is (true? (:methods? (first classes))))
+
+      )
+    )
   )
 
 (deftest test-get-interfaces

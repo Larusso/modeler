@@ -4,6 +4,10 @@ package {{package}}
 	{{#imports}}
     import {{namespace}}.{{name}};
 	{{/imports}}
+	{{#methods?}}
+	import flash.errors.IllegalOperationError;
+	{{/methods?}}
+
 
 	public class {{type-name}}{{#super-types?}} extends {{super-types.first.name}}{{/super-types?}}{{#implements}} implements {{implements.first.name}}{{#implements.rest}}, {{name}}{{/implements.rest}}{{/implements?}}
 	{
@@ -37,7 +41,7 @@ package {{package}}
 		//  constructor
 		//////////////////////////////////////////////
 
-		public function {{name}}()
+		public function {{type-name}}()
 		{
 			{{#super-types?}}
 			super();
@@ -58,7 +62,7 @@ package {{package}}
 
 		public function {{name}}( {{#params}}{{#first}}{{name}}:{{#type}}{{name}}{{/type}}{{/first}}{{#rest}}, {{name}}:{{#type}}{{name}}{{/type}}{{/rest}}{{/params}} ):{{#returns}}{{name}}{{/returns}}
 		{
-			throw new IlligalOperationError("override method {{name}} in subclass");
+			throw new IllegalOperationError("override method {{name}} in subclass");
 		}
 
 		{{/methods.all}}

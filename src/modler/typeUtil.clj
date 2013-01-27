@@ -232,13 +232,13 @@
     (get-properties model false)
     )
   ([model include-ancestors]
-    (let [retrieve-function (if (= (:tag model) :class ) get-class-by-name get-iface-by-name)
+    (let [model-value *model* retrieve-function (if (= (:tag model) :class ) get-class-by-name get-iface-by-name)
           declarations (distinct (concat (if (implements-iface? model)
-                                           (mapcat #(get-properties (get-iface-by-name *model* (get-qualified-name %)) true) (get-implemented-interfaces model))
+                                           (mapcat #(get-properties (get-iface-by-name model-value (get-qualified-name %)) true) (get-implemented-interfaces model))
                                            ) (getTagList model :property createPropertieObject)))
 
           extended-declarations (distinct (concat (if (extends-type? model)
-                                                    (mapcat #(get-properties (retrieve-function *model* (get-qualified-name %)) true) (get-extends-types model))
+                                                    (mapcat #(get-properties (retrieve-function model-value (get-qualified-name %)) true) (get-extends-types model))
                                                     ) []))
           ]
 
@@ -305,7 +305,7 @@
   (merge {:name (:name (:attrs methodTag))
           :returns (getTypeComponents (:returns (:attrs methodTag)))}
     (if (params? methodTag)
-      {:params (getParams methodTag)}
+      {:params (pack-list (getParams methodTag))}
       {}
       )
     )
@@ -317,13 +317,13 @@
     (get-methods model false)
     )
   ([model include-ancestors]
-    (let [retrieve-function (if (= (:tag model) :class ) get-class-by-name get-iface-by-name)
+    (let [model-value *model* retrieve-function (if (= (:tag model) :class ) get-class-by-name get-iface-by-name)
           declarations (distinct (concat (if (implements-iface? model)
-                                           (mapcat #(get-methods (get-iface-by-name *model* (get-qualified-name %)) true) (get-implemented-interfaces model))
+                                           (mapcat #(get-methods (get-iface-by-name model-value (get-qualified-name %)) true) (get-implemented-interfaces model))
                                            ) (getTagList model :method createMethodObject)))
 
           extended-declarations (distinct (concat (if (extends-type? model)
-                                                    (mapcat #(get-methods (retrieve-function *model* (get-qualified-name %)) true) (get-extends-types model))
+                                                    (mapcat #(get-methods (retrieve-function model-value (get-qualified-name %)) true) (get-extends-types model))
                                                     ) []))
           ]
 
@@ -332,7 +332,8 @@
         (into [] (difference (set declarations) (set extended-declarations)))
         )
       )
-    ))
+    )
+  )
 
 (defn methods?
   "returns true if the given classmodel contains methods"
@@ -357,7 +358,7 @@
           (get-extends-types model)
           (map :type (get-properties model))
           (map :returns (get-methods model))
-          (mapcat #(map :type (:params %1)) (get-methods model))
+          (mapcat #(map :type (:all (:params %1))) (get-methods model))
           )
         )
       )

@@ -336,6 +336,7 @@
 
         (is (true? (methods? class3)))
         (is (= (count (get-methods class3)) 1))
+        (is (= "copy" (:name (first (get-methods class3)))))
 
         (is (every? check-method (get-methods class3)))
 
