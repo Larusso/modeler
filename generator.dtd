@@ -9,7 +9,7 @@
 				type CDATA #REQUIRED
 				templateId CDATA #REQUIRED>
 
-		<!ELEMENT class (implements|property|method|extends|const)*>
+		<!ELEMENT class (implements|property|method|extends|const|decorates)*>
 		<!ATTLIST class
 				%lang;
 				type CDATA #REQUIRED
@@ -35,6 +35,11 @@
 
 		<!ELEMENT extends EMPTY>
 		<!ATTLIST extends
+				%lang;
+				type CDATA #REQUIRED>
+
+		<!ELEMENT decorates EMPTY>
+		<!ATTLIST decorates
 				%lang;
 				type CDATA #REQUIRED>
 
