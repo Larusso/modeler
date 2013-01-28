@@ -38,4 +38,8 @@
 		<implements iface="de.example.interfaces.Interface1"/>
 	</class>
 
+	<class type="de.example.model.Class4">
+		<decorates type="de.example.model.Class3"/>
+	</class>
+
 </model>
