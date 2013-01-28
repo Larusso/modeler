@@ -99,6 +99,13 @@
       (is (nil? ifaceObject))
       )
     )
+
+  (testing "class with namespace"
+    (let [model (get-struct-map (slurp "test-resources/model/get_class_by_name/model.xml"))
+          classObject (get-class-by-name model "de.example.NamespaceClass")]
+      (is (not (nil? classObject)))
+      )
+    )
   )
 
 (deftest test-get-iface-by-name
@@ -395,6 +402,8 @@
     (contains? item :implements? )
     (contains? item :consts? )
     (contains? item :consts )
+    (contains? item :decorates? )
+    (contains? item :decorates )
     )
   )
 
@@ -428,7 +437,7 @@
   )
 
 (deftest test-get-interface
-  (testing "get interace object with simple type"
+  (testing "get interface object with simple type"
     (binding [*model* xmlModel *lang* "as3"]
       (let [interface (get-iface-by-name xmlModel "IBaseClass")
             map (get-interface interface)]
@@ -436,6 +445,92 @@
         (is (map? map))
         (is (not (is-class-object? map)))
         (is (is-base-object? map))
+        )
+      )
+    )
+  )
+
+(defn is-decorator-object?
+  [item]
+  (and
+    (contains? item :type )
+    (contains? item :properties? )
+    (contains? item :properties )
+    (contains? item :methods? )
+    (contains? item :methods )
+    )
+  )
+
+(deftest test-get-decorators
+  (testing "get basic decorator"
+    (binding [*model* (get-struct-map (slurp "test-resources/model/decorator/simple-class-decorator.xml")) *lang* "as3"]
+      (let [class (get-class-by-name *model* "de.example.model.DecoratorClass")
+            decorators (get-decorators class)
+            decorator (first decorators)
+            properties (get-properties class)
+            methods (get-methods class)
+            imports (get-imports class)
+            ]
+        (is (seq? decorators))
+        (is (map? (first decorators)))
+        (is (true? (is-decorator-object? (first decorators))))
+        ;;(pprint (:properties decorator))
+        (is (= 2 (count (:properties decorator))))
+        (is (true? (:properties? decorator)))
+        (is (false? (:methods? decorator)))
+        (is (empty? (:methods decorator)))
+        (is (empty? methods))
+        (is (= 1 (count properties)))
+        (is (= 1 (count imports)))
+
+        ;;(println (:properties decorator))
+        )
+      )
+    )
+
+  (testing "get decorator with implemented interfaces"
+    (binding [*model* (get-struct-map (slurp "test-resources/model/decorator/class-decorator-with-interface.xml")) *lang* "as3"]
+      (let [class (get-class-by-name *model* "de.example.model.DecoratorClass")
+            decorators (get-decorators class)
+            decorator (first decorators)
+            properties (get-properties class)
+            methods (get-methods class)
+            imports (get-imports class)]
+        (is (seq? decorators))
+        (is (map? (first decorators)))
+        (is (true? (is-decorator-object? (first decorators))))
+        ;; (pprint (:properties decorator))
+        (is (= 2 (count (:properties decorator))))
+        (is (true? (:properties? decorator)))
+        (is (true? (:methods? decorator)))
+        (is (= 1 (count (:methods decorator))))
+        (is (= 1 (count properties)))
+        (is (= 0 (count methods)))
+        )
+      )
+    )
+
+  (testing "get decorators for class with decorations"
+    (binding [*model* (get-struct-map (slurp "test-resources/model/decorator/class-decorator-class-with-decorator.xml")) *lang* "as3"]
+      (let [class (get-class-by-name *model* "de.example.model.DecoratorClass")
+            decorators (get-decorators class)
+            decorator (first decorators)
+            properties (get-properties class)
+            methods (get-methods class)
+            imports (get-imports class)]
+        (is (seq? decorators))
+        (is (map? (first decorators)))
+        (is (true? (is-decorator-object? (first decorators))))
+
+        (is (true? (:properties? decorator)))
+        ;;(println "properties decorator" (:properties decorator))
+        (is (= 3 (count (:properties decorator))))
+
+        (is (true? (:methods? decorator)))
+        (is (= 1 (count (:methods decorator))))
+
+        (is (= 0 (count properties)))
+        (is (= 0 (count methods)))
         )
       )
     )

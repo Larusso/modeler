@@ -226,6 +226,8 @@
     )
   )
 
+(declare decorators? get-decorators)
+
 (defn get-properties
   "returns a sequence of class properties"
   ([model]
@@ -233,18 +235,20 @@
     )
   ([model include-ancestors]
     (let [model-value *model* retrieve-function (if (= (:tag model) :class ) get-class-by-name get-iface-by-name)
-          declarations (distinct (concat (if (implements-iface? model)
-                                           (mapcat #(get-properties (get-iface-by-name model-value (get-qualified-name %)) true) (get-implemented-interfaces model))
-                                           ) (getTagList model :property createPropertieObject)))
+          declarations (distinct (concat
+                                   (if (implements-iface? model)
+                                     (mapcat #(get-properties (get-iface-by-name model-value (get-qualified-name %)) true) (get-implemented-interfaces model))
+                                     )
+                                   (getTagList model :property createPropertieObject)))
 
           extended-declarations (distinct (concat (if (extends-type? model)
                                                     (mapcat #(get-properties (retrieve-function model-value (get-qualified-name %)) true) (get-extends-types model))
                                                     ) []))
+          decorators (mapcat #(get-properties (get-class-by-name model-value (get-qualified-name %)) true) (map :type (get-decorators model)))
           ]
-
       (if include-ancestors
-        (distinct (concat declarations extended-declarations))
-        (into [] (difference (set declarations) (set extended-declarations)))
+        (distinct (concat declarations extended-declarations decorators))
+        (into [] (difference (set declarations) (set extended-declarations) (set decorators)))
         )
       )
     )
@@ -325,11 +329,12 @@
           extended-declarations (distinct (concat (if (extends-type? model)
                                                     (mapcat #(get-methods (retrieve-function model-value (get-qualified-name %)) true) (get-extends-types model))
                                                     ) []))
+          decorators (mapcat #(get-methods (get-class-by-name model-value (get-qualified-name %)) true) (map :type (get-decorators model)))
           ]
 
       (if include-ancestors
-        (distinct (concat declarations extended-declarations))
-        (into [] (difference (set declarations) (set extended-declarations)))
+        (distinct (concat declarations extended-declarations decorators))
+        (into [] (difference (set declarations) (set extended-declarations) (set decorators)))
         )
       )
     )
@@ -354,6 +359,7 @@
     (distinct
       (filter pred
         (concat
+          (map :type (get-decorators model))
           (get-implemented-interfaces model)
           (get-extends-types model)
           (map :type (get-properties model))
@@ -363,6 +369,29 @@
         )
       )
     )
+  )
+
+(defn create-decorator-object
+  [decorates-tag]
+  (let [model-value *model* decoratee (get-class-by-name model-value (:type (:attrs decorates-tag)))]
+    {:type (getTypeComponents (:type (:attrs decorates-tag)))
+     :properties? (or (properties? decoratee) (some :properties? (get-decorators decoratee)) false)
+     :properties (distinct (concat (get-properties decoratee) (mapcat :properties (get-decorators decoratee))))
+     :methods? (or (methods? decoratee) (some :methods? (get-decorators decoratee)) false)
+     :methods (distinct (concat (get-methods decoratee) (mapcat :methods (get-decorators decoratee))))
+     }
+    )
+  )
+
+(defn get-decorators
+  "returns a seqence of decorator objects"
+  [model]
+  (getTagList model :decorates create-decorator-object)
+  )
+
+(defn decorates?
+  [model]
+  (> (count (get-decorators model)) 0)
   )
 
 ;;get class object
@@ -397,6 +426,8 @@
      :implements (pack-list (get-implemented-interfaces model))
      :consts? (consts? model)
      :consts (pack-list (get-consts model))
+     :decorates? (decorates? model)
+     :decorates (pack-list (get-decorators model))
      }
     )
   )
