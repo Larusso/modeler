@@ -41,7 +41,9 @@
 		<!ELEMENT decorates EMPTY>
 		<!ATTLIST decorates
 				%lang;
-				type CDATA #REQUIRED>
+				type CDATA #REQUIRED
+				field-name CDATA #REQUIRED
+				field-prefix CDATA "">
 
 		<!ELEMENT method (param)*>
 		<!ATTLIST method

@@ -375,6 +375,7 @@
   [decorates-tag]
   (let [model-value *model* decoratee (get-class-by-name model-value (:type (:attrs decorates-tag)))]
     {:type (getTypeComponents (:type (:attrs decorates-tag)))
+     :field-name (:field-name (:attrs decorates-tag))
      :properties? (or (properties? decoratee) (some :properties? (get-decorators decoratee)) false)
      :properties (distinct (concat (get-properties decoratee) (mapcat :properties (get-decorators decoratee))))
      :methods? (or (methods? decoratee) (some :methods? (get-decorators decoratee)) false)
