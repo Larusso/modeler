@@ -10,7 +10,7 @@
 	</class>
 
 	<class type="de.example.model.DecoratorClass">
-		<decorates type="de.example.model.DecorateeClass"/>
+		<decorates field-name="decoratee" type="de.example.model.DecorateeClass"/>
 		<property name="type" type="String"/>
 	</class>
 </model>

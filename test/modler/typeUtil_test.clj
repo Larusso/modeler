@@ -454,6 +454,7 @@
   [item]
   (and
     (contains? item :type )
+    (contains? item :field-name )
     (contains? item :properties? )
     (contains? item :properties )
     (contains? item :methods? )
@@ -474,7 +475,6 @@
         (is (seq? decorators))
         (is (map? (first decorators)))
         (is (true? (is-decorator-object? (first decorators))))
-        ;;(pprint (:properties decorator))
         (is (= 2 (count (:properties decorator))))
         (is (true? (:properties? decorator)))
         (is (false? (:methods? decorator)))
@@ -482,8 +482,7 @@
         (is (empty? methods))
         (is (= 1 (count properties)))
         (is (= 1 (count imports)))
-
-        ;;(println (:properties decorator))
+        (is (= "decoratee" (:field-name decorator)))
         )
       )
     )
@@ -499,7 +498,6 @@
         (is (seq? decorators))
         (is (map? (first decorators)))
         (is (true? (is-decorator-object? (first decorators))))
-        ;; (pprint (:properties decorator))
         (is (= 2 (count (:properties decorator))))
         (is (true? (:properties? decorator)))
         (is (true? (:methods? decorator)))
@@ -523,7 +521,6 @@
         (is (true? (is-decorator-object? (first decorators))))
 
         (is (true? (:properties? decorator)))
-        ;;(println "properties decorator" (:properties decorator))
         (is (= 3 (count (:properties decorator))))
 
         (is (true? (:methods? decorator)))
