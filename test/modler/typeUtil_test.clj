@@ -454,7 +454,7 @@
   [item]
   (and
     (contains? item :type )
-    (contains? item :field-name )
+    (contains? item :decorator-name )
     (contains? item :properties? )
     (contains? item :properties )
     (contains? item :methods? )
@@ -482,7 +482,7 @@
         (is (empty? methods))
         (is (= 1 (count properties)))
         (is (= 1 (count imports)))
-        (is (= "decoratee" (:field-name decorator)))
+        (is (= "decoratee" (:decorator-name decorator)))
         )
       )
     )

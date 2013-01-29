@@ -16,11 +16,11 @@
 
 	<class type="de.example.model.DecorateeClass2">
 		<implements iface="de.example.interfaces.IDescriptor"/>
-		<decorates field-name="decoratee1" type="de.example.model.DecorateeClass"/>
+		<decorates name="decoratee1" type="de.example.model.DecorateeClass"/>
 		<property name="type" type="String"/>
 	</class>
 
 	<class type="de.example.model.DecoratorClass">
-		<decorates field-name="decoratee2" type="de.example.model.DecorateeClass2"/>
+		<decorates name="decoratee2" type="de.example.model.DecorateeClass2"/>
 	</class>
 </model>
