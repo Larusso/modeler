@@ -34,12 +34,12 @@
 	</class>
 
 	<class type="de.example.model.Class3">
-		<decorates field-name="decoratee" type="de.example.model.Class1"/>
+		<decorates name="decoratee" type="de.example.model.Class1"/>
 		<implements iface="de.example.interfaces.Interface1"/>
 	</class>
 
 	<class type="de.example.model.Class4">
-		<decorates field-name="decoratee" type="de.example.model.Class3"/>
+		<decorates name="decoratee" type="de.example.model.Class3"/>
 	</class>
 
 </model>
