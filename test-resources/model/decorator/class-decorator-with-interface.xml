@@ -16,7 +16,7 @@
 
 	<class type="de.example.model.DecoratorClass">
 		<implements iface="de.example.interfaces.IDescriptor"/>
-		<decorates name="decoratee" type="de.example.model.DecorateeClass"/>
+		<decorates prefix="a_" name="decoratee" type="de.example.model.DecorateeClass"/>
 		<property name="type" type="String"/>
 	</class>
 </model>
