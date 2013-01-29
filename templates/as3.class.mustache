@@ -50,15 +50,15 @@ package {{package}}
 
 		{{#properties}}
         //---------------------------------------------
-        //  decorate {{name}}
+        //  decorate {{decorator-prefix}}{{name}}
         //---------------------------------------------
 
-        public function get {{name}}():{{#type}}{{name}}{{/type}}
+        public function get {{decorator-prefix}}{{name}}():{{#type}}{{name}}{{/type}}
         {
             return {{decorator-name}}.{{name}};
         }
 
-        public function set {{name}}(value:{{#type}}{{name}}{{/type}}):void
+        public function set {{decorator-prefix}}{{name}}(value:{{#type}}{{name}}{{/type}}):void
         {
             {{decorator-name}}.{{name}} = value;
         }
@@ -67,10 +67,10 @@ package {{package}}
 
         {{#methods.all}}
         //---------------------------------------------
-        //  decorate {{name}}
+        //  decorate {{decorator-prefix}}{{name}}
         //---------------------------------------------
 
-        public function {{name}}( {{#params}}{{#first}}{{name}}:{{#type}}{{name}}{{/type}}{{/first}}{{#rest}}, {{name}}:{{#type}}{{name}}{{/type}}{{/rest}}{{/params}} ):{{#returns}}{{name}}{{/returns}}
+        public function {{decorator-prefix}}{{name}}( {{#params}}{{#first}}{{name}}:{{#type}}{{name}}{{/type}}{{/first}}{{#rest}}, {{name}}:{{#type}}{{name}}{{/type}}{{/rest}}{{/params}} ):{{#returns}}{{name}}{{/returns}}
         {
             return {{decorator-name}}.{{name}}({{#params}}{{#first}}{{name}}{{/first}}{{#rest}}, {{name}}{{/rest}}{{/params}});
         }
