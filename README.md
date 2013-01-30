@@ -1,4 +1,18 @@
-# Description in a few days
+Modler
+======
+
+*generate model source code from xml definitions*
+
+
+## Generate
+
+### Model XML
+
+### Class Templates
+
+### Options
+
+## Build from Source
 
 [![Build Status](https://travis-ci.org/Larusso/modeler.png?branch=develop)](https://travis-ci.org/Larusso/modeler)    
 
