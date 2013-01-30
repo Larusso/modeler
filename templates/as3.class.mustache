@@ -46,33 +46,33 @@ package {{package}}
 
 		{{#decorates.all}}
 
-		private var {{field-name}}:{{#type}}{{name}}{{/type}} = new {{#type}}{{name}}{{/type}}();
+		private var {{decorator-name}}:{{#type}}{{name}}{{/type}} = new {{#type}}{{name}}{{/type}}();
 
-		{{#properties}}
+		{{#properties.all}}
         //---------------------------------------------
-        //  decorate {{name}}
+        //  decorate {{decorator-prefix}}{{name}}
         //---------------------------------------------
 
-        public function get {{name}}():{{#type}}{{name}}{{/type}}
+        public function get {{decorator-prefix}}{{name}}():{{#type}}{{name}}{{/type}}
         {
-            return {{field-name}}.{{name}};
+            return {{decorator-name}}.{{name}};
         }
 
-        public function set {{name}}(value:{{#type}}{{name}}{{/type}}):void
+        public function set {{decorator-prefix}}{{name}}(value:{{#type}}{{name}}{{/type}}):void
         {
-            {{field-name}}.{{name}} = value;
+            {{decorator-name}}.{{name}} = value;
         }
 
         {{/properties.all}}
 
         {{#methods.all}}
         //---------------------------------------------
-        //  decorate {{name}}
+        //  decorate {{decorator-prefix}}{{name}}
         //---------------------------------------------
 
-        public function {{name}}( {{#params}}{{#first}}{{name}}:{{#type}}{{name}}{{/type}}{{/first}}{{#rest}}, {{name}}:{{#type}}{{name}}{{/type}}{{/rest}}{{/params}} ):{{#returns}}{{name}}{{/returns}}
+        public function {{decorator-prefix}}{{name}}( {{#params}}{{#first}}{{name}}:{{#type}}{{name}}{{/type}}{{/first}}{{#rest}}, {{name}}:{{#type}}{{name}}{{/type}}{{/rest}}{{/params}} ):{{#returns}}{{name}}{{/returns}}
         {
-            return {{field-name}}.{{name}}({{#params}}{{#first}}{{name}}{{/first}}{{#rest}}, {{name}}{{/rest}}{{/params}});
+            return {{decorator-name}}.{{name}}({{#params}}{{#first}}{{name}}{{/first}}{{#rest}}, {{name}}{{/rest}}{{/params}});
         }
 
         {{/methods.all}}
