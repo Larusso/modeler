@@ -1,4 +1,18 @@
-# Description in a few days
+Modler
+======
+
+*generate model source code from xml definitions*
+
+
+## Generate
+
+### Model XML
+
+### Class Templates
+
+### Options
+
+## Build from Source
 
 ## License
 
