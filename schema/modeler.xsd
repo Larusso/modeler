@@ -36,6 +36,7 @@
 			<xs:element type="methodType" name="method" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element type="constType" name="const" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element type="decoratesType" name="decorates" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element type="docType" name="doc" minOccurs="0" maxOccurs="1"/>
 			<xs:any minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:group>
@@ -66,6 +67,9 @@
 	</xs:complexType>
 
 	<xs:complexType name="propertyType">
+		<xs:sequence>
+			<xs:element type="docType" name="doc" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
 		<xs:attribute type="xs:string" name="name" use="required"/>
 		<xs:attributeGroup ref="type-lang-attrgroup"/>
 		<xs:anyAttribute/>
@@ -82,13 +86,23 @@
 	</xs:complexType>
 
 	<xs:complexType name="methodType">
-		<xs:sequence maxOccurs="unbounded">
+		<xs:sequence>
+			<xs:element type="docType" name="doc" minOccurs="0" maxOccurs="1"/>
 			<xs:element type="param-type" name="param" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 		<xs:attribute type="type-type" name="returns" use="required"/>
 		<xs:attribute type="xs:string" name="name" use="required"/>
 		<xs:attribute type="xs:string" name="lang" default="*"/>
 		<xs:anyAttribute/>
+	</xs:complexType>
+
+	<xs:complexType name="docType">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute type="xs:string" name="lang" default="*"/>
+				<xs:anyAttribute/>
+			</xs:extension>
+		</xs:simpleContent>
 	</xs:complexType>
 
 	<xs:complexType name="extendsType">
