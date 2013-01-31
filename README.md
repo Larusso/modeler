@@ -4,6 +4,9 @@ Modler
 *generate model source code from xml definitions*
 
 
+[![Build Status](https://travis-ci.org/Larusso/modeler.png?branch=develop)](https://travis-ci.org/Larusso/modeler) 
+
+
 ## Generate
 
 ### Model XML
@@ -13,8 +16,7 @@ Modler
 ### Options
 
 ## Build from Source
-
-[![Build Status](https://travis-ci.org/Larusso/modeler.png?branch=develop)](https://travis-ci.org/Larusso/modeler)    
+   
 
 ## License
 
