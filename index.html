@@ -1,78 +1,159 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <meta charset='utf-8'>
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <title>Modeler by Larusso</title>
 
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-
-    <title>Modeler by Larusso</title>
   </head>
-
   <body>
-    <header>
-      <div class="inner">
+    <div class="wrapper">
+      <header>
         <h1>Modeler</h1>
-        <h2>Generate sourcecode from xml model definitions</h2>
-        <a href="https://github.com/Larusso/modeler" class="button"><small>View project on</small>GitHub</a>
-      </div>
-    </header>
+        <p>Generate sourcecode from xml model definitions</p>
 
-    <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
-          <h3>Welcome to GitHub Pages.</h3>
+        <p class="view"><a href="https://github.com/Larusso/modeler">View the Project on GitHub <small>Larusso/modeler</small></a></p>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
+        <ul>
+          <li><a href="https://github.com/Larusso/modeler/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/Larusso/modeler/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/Larusso/modeler">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>Modeler</h1>
+
+<p><em>generate model source code from xml definitions</em></p>
+
+<hr><p>Modeler is a Programm to generate class model source code from xml model definitions.
+Any language with a basic class system is supported. Your can generate multiple languages with the same model definition.</p>
+
+<p>There are different template projects available:</p>
+
+<p>//todo add list of template projects</p>
+
+<h2>Usage</h2>
+
+<h3>run from source with <a href="https://github.com/technomancy/leiningen" title="leiningen 2">leiningen 2</a>
+</h3>
+
+<p>Make sure you have installed <a href="https://github.com/technomancy/leiningen/wiki/Upgrading" title="leiningen installation">leiningen</a> on your system.
+Run Modeler like this:</p>
+
+<pre><code>lein run -- [options] path/to/model-definition.xml
 </code></pre>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<h3>run from modeler.jar</h3>
 
-<h3>Designer Templates</h3>
+<p>You can eather build or download the modeler.jar.
+A complete jar with all dependencies can be found <a href="http://www.google.de">here</a>: </p>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+<pre><code>java -jar path/to/modle.jar -- [options] path/to/model-definition.xml
+</code></pre>
 
-<h3>Rather Drive Stick?</h3>
+<h3>Options</h3>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<p>use the option -h or --help when you run Modeler to see a help page with all available options</p>
 
-<h3>Authors and Contributors</h3>
+<pre><code>usage: Modeler [options] [model PATH]
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+Switches                     Default       Desc                                                                  
+--------                     -------       ----                                                                  
+-lang, --languages           ["*"]         comma separated    list of languages to generate example 'as3,java,objc' 
+-t, --template-path          ./templates/  Path to template files                                                
+-o, --output-path            ./generated/  The output path                                                       
+-v, --no-verbose, --verbose  false                                                                               
+-h, --no-help, --help        false         Show help
+</code></pre>
 
-<h3>Support or Contact</h3>
+<h3>Model XML</h3>
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-        </section>
+<p>You define your class definitions with a simple xml structure. You can define classes and interfaces. You can set a lang attributes to all entities to generate only language specific classes, interfaces, methods, properties, … and so on. </p>
 
-        <aside id="sidebar">
-          <a href="https://github.com/Larusso/modeler/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-          <a href="https://github.com/Larusso/modeler/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a>
+<p><strong>example:</strong></p>
 
-          <p class="repo-owner"><a href="https://github.com/Larusso/modeler"></a> is maintained by <a href="https://github.com/Larusso">Larusso</a>.</p>
+<div class="highlight"><pre><span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="cp">&lt;!DOCTYPE model SYSTEM "http://www.modeler.tslarusso.de/generator.dtd"&gt;</span>
+<span class="nt">&lt;model</span> <span class="na">xmlns=</span><span class="s">"http://www.modeler.tslarusso.de/modelerSchema"</span>
+    <span class="na">xmlns:xsi=</span><span class="s">"http://www.w3.org/2001/XMLSchema-instance"</span>
+    <span class="na">xsi:schemaLocation=</span><span class="s">"http://www.modeler.tslarusso.de/modeler.xsd"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;class</span> <span class="na">type=</span><span class="s">"SimpleClass"</span> <span class="na">lang=</span><span class="s">"java"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"name"</span> <span class="na">type=</span><span class="s">"String"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;method</span> <span class="na">returns=</span><span class="s">"object"</span> <span class="na">name=</span><span class="s">"gimmeAllYouGot"</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;/class&gt;</span>
 
-          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.</p>
-        </aside>
-      </div>
+        <span class="nt">&lt;class</span> <span class="na">type=</span><span class="s">"OtherSimpleClass"</span> <span class="na">lang=</span><span class="s">"cpp"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"name"</span> <span class="na">type=</span><span class="s">"String"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;method</span> <span class="na">returns=</span><span class="s">"object"</span> <span class="na">name=</span><span class="s">"gimmeAllYouGot"</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;/class&gt;</span>
+    <span class="nt">&lt;/model&gt;</span>
+</pre></div>
+
+<p>For a full modeler xml description see: //todo add link to wiki here</p>
+
+<h3>Generated Model</h3>
+
+<p>Modeler transforms the xml definitions to clojure data. Modeler applies the designated template to all entries after the conversion. The <a href="http://mustache.github.com" title="mustache -- Logic-less templates.">mustache</a> template will be provided with a hashmap containing all the converted information</p>
+
+<p>-- add example here</p>
+
+<p>For a full description see: //todo add link to wiki here</p>
+
+<h3>Class Templates</h3>
+
+<p>Templates are written in the logic less <a href="http://mustache.github.com" title="mustache -- Logic-less templates.">mustache</a> style.
+Each template is referenced by its template key and language.</p>
+
+<p><strong>example:</strong></p>
+
+<ul>
+<li>
+<strong>java class template</strong> java.class.mustache</li>
+<li>
+<strong>java iface template</strong> java.iface.mustache</li>
+</ul><p>class and face are the default template keys for class and iface model definitions. You can set any template key for your class or iface definition.</p>
+
+<p><strong>example:</strong></p>
+
+<ul>
+<li>
+<strong>as3 decorator class template</strong> as3.decoratorClass.mustache</li>
+</ul><h2>run 'Modeler'</h2>
+
+<h3>run with lein2</h3>
+
+<p>Make sure you have installed <a href="https://github.com/technomancy/leiningen" title="leiningen 2">leiningen</a> on your system.
+Run Modeler like this:</p>
+
+<pre><code>lein run -- path/to/model.xml
+</code></pre>
+
+<h3>create uberjar</h3>
+
+<p>Create a uberjar with leiningen:</p>
+
+<pre><code>lein uberjar
+</code></pre>
+
+<h2>License</h2>
+
+<p>Copyright (C) 2012 Manfred Endres</p>
+
+<p>Distributed under the Eclipse Public License, the same as Clojure.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/Larusso">Larusso</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
     </div>
-
-  
+    <script src="javascripts/scale.fix.js"></script>
+    
   </body>
 </html>
