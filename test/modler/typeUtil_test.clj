@@ -535,6 +535,22 @@
         )
       )
     )
+
+  (testing "get decorators with lang parameter set"
+    (binding [*model* (get-struct-map (slurp "test-resources/model/decorator/class-decorator-different-lang-set.xml")) *lang* "as3"]
+      (let [class (get-class-by-name *model* "de.example.model.DecoratorClass")
+            decorators (get-decorators class)]
+        (is (empty? decorators))
+        )
+      )
+
+    (binding [*model* (get-struct-map (slurp "test-resources/model/decorator/class-decorator-different-lang-set.xml")) *lang* "java"]
+      (let [class (get-class-by-name *model* "de.example.model.DecoratorClass")
+            decorators (get-decorators class)]
+        (is (not(empty? decorators)))
+        )
+      )
+    )
   )
 
 (deftest filterTagTest
