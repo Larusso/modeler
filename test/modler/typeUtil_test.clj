@@ -547,7 +547,40 @@
     (binding [*model* (get-struct-map (slurp "test-resources/model/decorator/class-decorator-different-lang-set.xml")) *lang* "java"]
       (let [class (get-class-by-name *model* "de.example.model.DecoratorClass")
             decorators (get-decorators class)]
-        (is (not(empty? decorators)))
+        (is (not (empty? decorators)))
+        )
+      )
+    )
+  )
+
+;;/////////////////////////////////////////
+;;  test docs
+;;////////////////////////////////////////
+
+(deftest test-get-documentation
+  (testing "get entity documentation as3"
+    (binding [*model* (get-struct-map (slurp "test-resources/model/docs/model.xml")) *lang* "as3"]
+      (let [simpleClass (get-class-by-name *model* "SimpleClass")
+            property (first (filterTag :property (:content simpleClass)))
+            method (first (filterTag :method (:content simpleClass)))]
+        (is (not (nil? (get-documentation simpleClass))))
+        (is (string? (get-documentation simpleClass)))
+        (is (= "Helper class to create great stuff." (get-documentation simpleClass)))
+        (is (not (nil? (get-documentation property))))
+        (is (not (nil? (get-documentation method))))
+        )
+      )
+    )
+
+  (testing "get entity documentation lang java"
+    (binding [*model* (get-struct-map (slurp "test-resources/model/docs/model.xml")) *lang* "java"]
+      (let [simpleClass (get-class-by-name *model* "SimpleClass")
+            property (first (filterTag :property (:content simpleClass)))
+            method (first (filterTag :method (:content simpleClass)))]
+        (is (not (nil? (get-documentation simpleClass))))
+        (is (string? (get-documentation simpleClass)))
+        (is (nil? (get-documentation property)))
+        (is (nil? (get-documentation method)))
         )
       )
     )

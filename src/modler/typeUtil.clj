@@ -172,6 +172,17 @@
     )
   )
 
+;;/////////////////////////////////////////
+;;  documentation
+;;////////////////////////////////////////
+
+(defn get-documentation
+  [model]
+  (let [lang-value *lang* zipped-model (zip/xml-zip model)]
+    (zf/xml1-> zipped-model :doc [#(or ((zf/attr= :lang lang-value) %) ((zf/attr= :lang "*") %))] zf/text)
+    )
+  )
+
 ;;superclass
 (defn create-extends-object
   [extend-tag]
