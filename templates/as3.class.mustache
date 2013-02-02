@@ -25,6 +25,9 @@ package {{package}}
 
 		private var _{{name}}:{{#type}}{{name}}{{/type}};
 
+		/**
+        {{doc}}
+        **/
 		public function get {{name}}():{{#type}}{{name}}{{/type}}
 		{
 			return _{{name}};
@@ -48,11 +51,14 @@ package {{package}}
 
 		private var {{decorator-name}}:{{#type}}{{name}}{{/type}} = new {{#type}}{{name}}{{/type}}();
 
-		{{#properties.all}}
+		{{#properties}}
         //---------------------------------------------
         //  decorate {{decorator-prefix}}{{name}}
         //---------------------------------------------
 
+		/**
+        {{doc}}
+        **/
         public function get {{decorator-prefix}}{{name}}():{{#type}}{{name}}{{/type}}
         {
             return {{decorator-name}}.{{name}};
@@ -63,21 +69,24 @@ package {{package}}
             {{decorator-name}}.{{name}} = value;
         }
 
-        {{/properties.all}}
+        {{/properties}}
 
-        {{#methods.all}}
+        {{#methods}}
         //---------------------------------------------
         //  decorate {{decorator-prefix}}{{name}}
         //---------------------------------------------
 
+		/**
+        {{doc}}
+        **/
         public function {{decorator-prefix}}{{name}}( {{#params}}{{#first}}{{name}}:{{#type}}{{name}}{{/type}}{{/first}}{{#rest}}, {{name}}:{{#type}}{{name}}{{/type}}{{/rest}}{{/params}} ):{{#returns}}{{name}}{{/returns}}
         {
             return {{decorator-name}}.{{name}}({{#params}}{{#first}}{{name}}{{/first}}{{#rest}}, {{name}}{{/rest}}{{/params}});
         }
 
-        {{/methods.all}}
+        {{/methods}}
 
-		{{/decorates}}
+		{{/decorates.all}}
 
 
 		///////////////////////////////////////////////
@@ -103,6 +112,9 @@ package {{package}}
 		//  {{name}}
 		//---------------------------------------------
 
+		/**
+		{{doc}}
+		**/
 		public function {{name}}( {{#params}}{{#first}}{{name}}:{{#type}}{{name}}{{/type}}{{/first}}{{#rest}}, {{name}}:{{#type}}{{name}}{{/type}}{{/rest}}{{/params}} ):{{#returns}}{{name}}{{/returns}}
 		{
 			throw new IllegalOperationError("override method {{name}} in subclass");

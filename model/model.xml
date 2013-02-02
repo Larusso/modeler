@@ -5,8 +5,14 @@
        xsi:schemaLocation="http://www.modeler.tslarusso.de/modeler.xsd">
 
 	<iface type="de.example.interfaces.Interface1">
-		<property name="name" type="String"/>
-		<property name="type" type="int"/>
+		<property name="name" type="String">
+			<doc><![CDATA[returns instance name]]></doc>
+		</property>
+		<property name="type" type="int">
+			<doc><![CDATA[returns instance type
+							1 = model
+							2 = controller]]></doc>
+		</property>
 		<method returns="String" name="getName">
 			<param name="type" type="int"/>
 			<param name="inst" type="Object"/>
@@ -45,6 +51,10 @@
 	<class type="de.example.model.Class5">
 		<decorates prefix="a_" name="decorateeA" type="de.example.model.Class4"/>
 		<decorates prefix="b_" name="decorateeB" type="de.example.model.Class4"/>
+	</class>
+
+	<class type="de.example.model.Class6">
+		<property name="uniqeName" type="String"/>
 	</class>
 
 </model>
