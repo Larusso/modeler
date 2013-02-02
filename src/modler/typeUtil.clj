@@ -233,6 +233,7 @@
     {
       :name (:name (:attrs propertyTag))
       :type (getTypeComponents (:type (:attrs propertyTag)))
+      :doc (get-documentation propertyTag)
       }
     )
   )
@@ -278,6 +279,7 @@
     :name (zf/xml1-> const-data (zf/attr :name ))
     :type (getTypeComponents (zf/xml1-> const-data (zf/attr :type )))
     :value (zf/xml1-> const-data zf/text)
+    :doc (get-documentation const-data)
     }
   )
 
@@ -318,7 +320,8 @@
   "transforms the given method xml model to a hashmap"
   [methodTag]
   (merge {:name (:name (:attrs methodTag))
-          :returns (getTypeComponents (:returns (:attrs methodTag)))}
+          :returns (getTypeComponents (:returns (:attrs methodTag)))
+          :doc (get-documentation methodTag)}
     (if (params? methodTag)
       {:params (pack-list (getParams methodTag))}
       {}
@@ -420,7 +423,8 @@
    :properties (pack-list (get-properties model))
    :properties? (properties? model)
    :methods (pack-list (get-methods model))
-   :methods? (methods? model)}
+   :methods? (methods? model)
+   :doc (get-documentation model)}
   )
 
 (defn get-interface

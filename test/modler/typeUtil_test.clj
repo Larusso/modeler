@@ -201,18 +201,27 @@
 
   )
 
+(defn is-property-object?
+  [map]
+  (and
+    (map? map)
+    (contains? map :name )
+    (contains? map :type )
+    (contains? map :doc )
+    )
+  )
+
 (deftest test-get-properties
   (testing "get properties without extends or implementations"
     (binding [*model* xmlModel *lang* "as3"]
       (let [class (get-class-by-name xmlModel "SimpleClass")
-            interface (get-iface-by-name xmlModel "IBaseClass")
-            check-method #(and (map? %) (contains? % :name ) (contains? % :type ))]
+            interface (get-iface-by-name xmlModel "IBaseClass")]
 
         (is (true? (properties? class)))
         (is (not (nil? (get-properties class))))
         (is (= 1 (count (get-properties class))))
 
-        (is (every? check-method (get-properties class)))
+        (is (every? is-property-object? (get-properties class)))
 
         (is (false? (properties? interface)))
         (is (= [] (get-properties interface)))
@@ -223,49 +232,57 @@
   (testing "get properties with extends or implementations"
     (binding [*model* xmlModel *lang* "as3"]
       (let [class (get-class-by-name xmlModel "BaseClass")
-            class2 (get-class-by-name xmlModel "ExtendedClass")
-            check-method #(and (map? %) (contains? % :name ) (contains? % :type ))]
+            class2 (get-class-by-name xmlModel "ExtendedClass")]
 
         (is (true? (properties? class)))
         (is (not (nil? (get-properties class))))
         (is (= 2 (count (get-properties class))))
 
-        (is (every? check-method (get-properties class)))
+        (is (every? is-property-object? (get-properties class)))
 
         (is (true? (properties? class2)))
         (is (not (nil? (get-properties class2))))
         (is (= 1 (count (get-properties class2))))
         (is (= 4 (count (get-properties class2 true))))
 
-        (is (every? check-method (get-properties class2)))
+        (is (every? is-property-object? (get-properties class2)))
         )
       )
     )
 
   (testing "get properties with library class as super class"
     (binding [*model* xmlModel *lang* "as3"]
-      (let [class (get-class-by-name xmlModel "ExtendsLibraryClass")
-            check-method #(and (map? %) (contains? % :name ) (contains? % :type ))]
+      (let [class (get-class-by-name xmlModel "ExtendsLibraryClass")]
 
         (is (true? (properties? class)))
         (is (not (nil? (get-properties class))))
         (is (= 1 (count (get-properties class))))
-        (is (every? check-method (get-properties class)))
+        (is (every? is-property-object? (get-properties class)))
         )
       )
+    )
+  )
+
+(defn is-const-object
+  [map]
+  (and
+    (map? map)
+    (contains? map :name )
+    (contains? map :value )
+    (contains? map :type )
+    (contains? map :doc )
     )
   )
 
 (deftest test-get-consts
   (testing "get consts"
     (binding [*model* xmlModel3 *lang* "as3"]
-      (let [class (get-class-by-name xmlModel3 "ConstClass")
-            check-method #(and (map? %) (contains? % :name ) (contains? % :value ) (contains? % :type ))]
+      (let [class (get-class-by-name xmlModel3 "ConstClass")]
 
         (is (true? (consts? class)))
         (is (not (nil? (get-consts class))))
         (is (= 3 (count (get-consts class))))
-        (is (every? check-method (get-consts class)))
+        (is (every? is-const-object (get-consts class)))
         (is (= "CONST_1" (:value (first (get-consts class)))))
         )
       )
@@ -322,6 +339,16 @@
     )
   )
 
+(defn is-method-object?
+  [map]
+  (and
+    (map? map)
+    (contains? map :name )
+    (contains? map :returns )
+    (contains? map :doc )
+    )
+  )
+
 (deftest test-get-methods
   (testing "methods"
     (binding [*model* xmlModel *lang* "as3"]
@@ -330,13 +357,12 @@
             class3 (get-class-by-name xmlModel "ExtendedClass")
             class4 (get-class-by-name xmlModel "ExtendedClass2")
             class5 (get-class-by-name xmlModel "SuperTestClass")
-            check-method #(and (map? %) (contains? % :name ) (contains? % :returns ))
             ]
 
         (is (true? (methods? class1)))
         (is (= (count (get-methods class1)) 3))
 
-        (is (every? check-method (get-methods class1)))
+        (is (every? is-method-object? (get-methods class1)))
 
         (is (false? (methods? class2)))
         (is (= [] (get-methods class2)))
@@ -345,16 +371,16 @@
         (is (= (count (get-methods class3)) 1))
         (is (= "copy" (:name (first (get-methods class3)))))
 
-        (is (every? check-method (get-methods class3)))
+        (is (every? is-method-object? (get-methods class3)))
 
         (is (true? (methods? class4)))
         (is (= (count (get-methods class4)) 1))
 
-        (is (every? check-method (get-methods class4)))
+        (is (every? is-method-object? (get-methods class4)))
 
         (is (true? (methods? class5)))
         (is (= (count (get-methods class5)) 4))
-        (is (every? check-method (get-methods class5)))
+        (is (every? is-method-object? (get-methods class5)))
         )
       )
     )
@@ -392,6 +418,7 @@
     (contains? item :properties? )
     (contains? item :methods )
     (contains? item :methods? )
+    (contains? item :doc )
     )
   )
 
