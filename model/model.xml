@@ -30,6 +30,8 @@
 	</iface>
 
 	<class type="de.example.model.Class1">
+		<const name="SERVER_URI" type="String">de.example.uri</const>
+		<const name="SERVER_URL" type="String">http://www.example.de/uri</const>
 		<implements iface="de.example.interfaces.Interface1"/>
 		<implements iface="de.example.interfaces.Interface2"/>
 	</class>

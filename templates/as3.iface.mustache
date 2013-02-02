@@ -5,6 +5,9 @@ package {{package}}
     import {{namespace}}.{{name}};
 	{{/imports}}
 
+	/**
+    {{doc}}
+    **/
 	public interface {{type-name}}{{#super-types?}} extends {{super-types.first.name}}{{/super-types?}}{{#implements}} implements {{implements.first.name}}{{#implements.rest}}, {{name}}{{/implements.rest}}{{/implements?}}
 	{
 		{{#properties?}}
@@ -19,6 +22,9 @@ package {{package}}
 		//  {{name}}
 		//---------------------------------------------
 
+		/**
+        {{doc}}
+        **/
 		function get {{name}}():{{#type}}{{name}}{{/type}};
 
 		function set {{name}}(value:{{#type}}{{name}}{{/type}}):void;
@@ -37,6 +43,9 @@ package {{package}}
 		//  {{name}}
 		//---------------------------------------------
 
+		/**
+        {{doc}}
+        **/
 		function {{name}}( {{#params}}{{#first}}{{name}}:{{#type}}{{name}}{{/type}}{{/first}}{{#rest}}, {{name}}:{{#type}}{{name}}{{/type}}{{/rest}}{{/params}} ):{{#returns}}{{name}}{{/returns}};
 
 		{{/methods.all}}

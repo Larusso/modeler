@@ -8,9 +8,22 @@ package {{package}}
 	import flash.errors.IllegalOperationError;
 	{{/methods?}}
 
-
+	/**
+    {{doc}}
+    **/
 	public class {{type-name}}{{#super-types?}} extends {{super-types.first.name}}{{/super-types?}}{{#implements}} implements {{implements.first.name}}{{#implements.rest}}, {{name}}{{/implements.rest}}{{/implements?}}
 	{
+		{{#consts?}}
+        ///////////////////////////////////////////////
+        //  constants
+        //////////////////////////////////////////////
+
+        {{/consts?}}
+
+        {{#consts.all}}
+        public static const {{name}}:{{#type}}{{name}}{{/type}} = "{{value}}";
+        {{/consts.all}}
+
 		{{#properties?}}
 		///////////////////////////////////////////////
 		//  properties
