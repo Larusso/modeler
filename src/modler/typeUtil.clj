@@ -1,10 +1,11 @@
 (ns modler.typeUtil
   (:import (java.io ByteArrayInputStream))
   (:import (javax.xml.parsers.SAXParserFactorySAXParserFactory))
-  (:require [clojure.string :refer (split join lower-case)]
+  (:require [clojure.string :refer (split join lower-case split-lines)]
             [clojure.zip :as zip]
             [clojure.xml :as xml]
             [clojure.data.zip.xml :as zf]
+            [clojure.data.zip :as dz]
             [clojure.pprint :refer :all ]
             [clojure.set :refer (difference)]))
 
@@ -176,10 +177,18 @@
 ;;  documentation
 ;;////////////////////////////////////////
 
+(defn text
+  "Returns the textual contents of the given location, similar to
+  xpaths's value-of"
+  [loc]
+  (apply str (zf/xml-> loc dz/descendants zip/node string?))
+  )
+
 (defn get-documentation
   [model]
-  (let [lang-value *lang* zipped-model (zip/xml-zip model)]
-    (zf/xml1-> zipped-model :doc [#(or ((zf/attr= :lang lang-value) %) ((zf/attr= :lang "*") %))] zf/text)
+  (let [lang-value *lang* zipped-model (zip/xml-zip model)
+        doc-text (zf/xml1-> zipped-model :doc [#(or ((zf/attr= :lang lang-value) %) ((zf/attr= :lang "*") %))] text)]
+    (if-not (nil? doc-text) (map clojure.string/trim (split-lines doc-text)))
     )
   )
 
@@ -234,6 +243,7 @@
       :name (:name (:attrs propertyTag))
       :type (getTypeComponents (:type (:attrs propertyTag)))
       :doc (get-documentation propertyTag)
+      :docs? (not (nil? (get-documentation propertyTag)))
       }
     )
   )
@@ -280,6 +290,7 @@
     :type (getTypeComponents (zf/xml1-> const-data (zf/attr :type )))
     :value (zf/xml1-> const-data zf/text)
     :doc (get-documentation const-data)
+    :docs? (not (nil? (get-documentation const-data)))
     }
   )
 
@@ -321,7 +332,8 @@
   [methodTag]
   (merge {:name (:name (:attrs methodTag))
           :returns (getTypeComponents (:returns (:attrs methodTag)))
-          :doc (get-documentation methodTag)}
+          :doc (get-documentation methodTag)
+          :docs? (not (nil? (get-documentation methodTag)))}
     (if (params? methodTag)
       {:params (pack-list (getParams methodTag))}
       {}
@@ -424,7 +436,8 @@
    :properties? (properties? model)
    :methods (pack-list (get-methods model))
    :methods? (methods? model)
-   :doc (get-documentation model)}
+   :doc (get-documentation model)
+   :docs? (not (nil? (get-documentation model)))}
   )
 
 (defn get-interface

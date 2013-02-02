@@ -14,10 +14,8 @@
 			</doc>
 		</property>
 		<method returns="object" name="gimmeAllYouGot">
-			<doc lang="as3"><![CDATA[
-									Al Pacino function.
-									@returns everything there is.
-							]]></doc>
+			<doc lang="as3"><![CDATA[Al Pacino function.
+				@returns everything there is.]]></doc>
 		</method>
 	</class>
 </model>

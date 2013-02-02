@@ -10,8 +10,8 @@
 		</property>
 		<property name="type" type="int">
 			<doc><![CDATA[returns instance type
-							1 = model
-							2 = controller]]></doc>
+				1 = model
+				2 = controller]]></doc>
 		</property>
 		<method returns="String" name="getName">
 			<param name="type" type="int"/>
