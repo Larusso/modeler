@@ -15,6 +15,10 @@ package {{package}}
     {{/doc}}
     **/
     {{/docs?}}
+
+    {{#annotations}}
+    {{.}}
+    {{/annotations}}
 	public class {{type-name}}{{#super-types?}} extends {{super-types.first.name}}{{/super-types?}}{{#implements}} implements {{implements.first.name}}{{#implements.rest}}, {{name}}{{/implements.rest}}{{/implements?}}
 	{
 		{{#consts?}}
@@ -49,6 +53,10 @@ package {{package}}
         {{/doc}}
         **/
         {{/docs?}}
+
+        {{#annotations}}
+        {{.}}
+        {{/annotations}}
 		public function get {{name}}():{{#type}}{{name}}{{/type}}
 		{
 			return _{{name}};
@@ -84,6 +92,10 @@ package {{package}}
         {{/doc}}
         **/
         {{/docs?}}
+
+        {{#annotations}}
+		{{.}}
+		{{/annotations}}
         public function get {{decorator-prefix}}{{name}}():{{#type}}{{name}}{{/type}}
         {
             return {{decorator-name}}.{{name}};
@@ -108,6 +120,10 @@ package {{package}}
         {{/doc}}
         **/
         {{/docs?}}
+
+        {{#annotations}}
+		{{.}}
+		{{/annotations}}
         public function {{decorator-prefix}}{{name}}( {{#params}}{{#first}}{{name}}:{{#type}}{{name}}{{/type}}{{/first}}{{#rest}}, {{name}}:{{#type}}{{name}}{{/type}}{{/rest}}{{/params}} ):{{#returns}}{{name}}{{/returns}}
         {
             return {{decorator-name}}.{{name}}({{#params}}{{#first}}{{name}}{{/first}}{{#rest}}, {{name}}{{/rest}}{{/params}});
@@ -148,6 +164,10 @@ package {{package}}
         {{/doc}}
         **/
         {{/docs?}}
+
+        {{#annotations}}
+		{{.}}
+		{{/annotations}}
 		public function {{name}}( {{#params}}{{#first}}{{name}}:{{#type}}{{name}}{{/type}}{{/first}}{{#rest}}, {{name}}:{{#type}}{{name}}{{/type}}{{/rest}}{{/params}} ):{{#returns}}{{name}}{{/returns}}
 		{
 			throw new IllegalOperationError("override method {{name}} in subclass");
