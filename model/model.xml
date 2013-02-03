@@ -34,7 +34,7 @@
 
     <class type="de.example.model.Class1">
         <annotate><![CDATA[[Bindable]]]></annotate>
-        <const name="SERVER_URI" type="String">de.example.uri</const>
+        <const name="SERVER_URI" type="String" lang="java">de.example.uri</const>
         <const name="SERVER_URL" type="String">http://www.example.de/uri</const>
         <implements iface="de.example.interfaces.Interface1"/>
         <implements iface="de.example.interfaces.Interface2"/>
