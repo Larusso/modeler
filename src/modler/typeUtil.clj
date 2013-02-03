@@ -177,6 +177,13 @@
 ;;  documentation
 ;;////////////////////////////////////////
 
+;;todo move utility stuff in own namespace
+(defn lang-attr=
+  "Returns a query predicate that matches a node when its lang attribute has the value of lang-value or *"
+  [lang-value]
+  (fn [loc] (or ((zf/attr= :lang lang-value) loc) ((zf/attr= :lang "*") loc)))
+  )
+
 (defn text
   "Returns the textual contents of the given location, similar to
   xpaths's value-of"
@@ -187,8 +194,15 @@
 (defn get-documentation
   [model]
   (let [lang-value *lang* zipped-model (zip/xml-zip model)
-        doc-text (zf/xml1-> zipped-model :doc [#(or ((zf/attr= :lang lang-value) %) ((zf/attr= :lang "*") %))] text)]
+        doc-text (zf/xml1-> zipped-model :doc [(lang-attr= lang-value)] text)]
     (if-not (nil? doc-text) (map clojure.string/trim (split-lines doc-text)))
+    )
+  )
+
+(defn get-annotations
+  [model]
+  (let [lang-value *lang* zipped-model (zip/xml-zip model)]
+    (zf/xml-> zipped-model :annotate [(lang-attr= lang-value)] zf/text)
     )
   )
 
@@ -244,6 +258,7 @@
       :type (getTypeComponents (:type (:attrs propertyTag)))
       :doc (get-documentation propertyTag)
       :docs? (not (nil? (get-documentation propertyTag)))
+      :annotations (get-annotations propertyTag)
       }
     )
   )
@@ -291,6 +306,7 @@
     :value (zf/xml1-> const-data zf/text)
     :doc (get-documentation const-data)
     :docs? (not (nil? (get-documentation const-data)))
+    :annotations (get-annotations const-data)
     }
   )
 
@@ -333,7 +349,8 @@
   (merge {:name (:name (:attrs methodTag))
           :returns (getTypeComponents (:returns (:attrs methodTag)))
           :doc (get-documentation methodTag)
-          :docs? (not (nil? (get-documentation methodTag)))}
+          :docs? (not (nil? (get-documentation methodTag)))
+          :annotations (get-annotations methodTag)}
     (if (params? methodTag)
       {:params (pack-list (getParams methodTag))}
       {}
@@ -437,7 +454,8 @@
    :methods (pack-list (get-methods model))
    :methods? (methods? model)
    :doc (get-documentation model)
-   :docs? (not (nil? (get-documentation model)))}
+   :docs? (not (nil? (get-documentation model)))
+   :annotations (get-annotations model)}
   )
 
 (defn get-interface

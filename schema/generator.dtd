@@ -3,25 +3,25 @@
 
 		<!ELEMENT model (class|iface|entity|include|types)*>
 
-		<!ELEMENT entity (implements|property|method|extends|const|doc|anotate)*>
+		<!ELEMENT entity (implements|property|method|extends|const|doc|annotate)*>
 		<!ATTLIST entity
 				%lang;
 				type CDATA #REQUIRED
 				templateId CDATA #REQUIRED>
 
-		<!ELEMENT class (implements|property|method|extends|const|decorates|doc|anotate)*>
+		<!ELEMENT class (implements|property|method|extends|const|decorates|doc|annotate)*>
 		<!ATTLIST class
 				%lang;
 				type CDATA #REQUIRED
 				templateId CDATA "class">
 
-		<!ELEMENT iface (property|method|extends|doc|anotate)*>
+		<!ELEMENT iface (property|method|extends|doc|annotate)*>
 		<!ATTLIST iface
 				%lang;
 				type CDATA #REQUIRED
 				templateId CDATA "iface">
 
-		<!ELEMENT property (doc|anotate)*>
+		<!ELEMENT property (doc|annotate)*>
 		<!ATTLIST property
 				%lang;
 				name CDATA #REQUIRED
@@ -37,8 +37,8 @@
 		<!ATTLIST doc
 				%lang;>
 
-        <!ELEMENT anotate (#PCDATA)>
-        <!ATTLIST anotate
+        <!ELEMENT annotate (#PCDATA)>
+        <!ATTLIST annotate
                 %lang;>
 
 		<!ELEMENT extends EMPTY>
@@ -53,7 +53,7 @@
 				name CDATA #REQUIRED
 				prefix CDATA "">
 
-		<!ELEMENT method (param|doc|anotate)*>
+		<!ELEMENT method (param|doc|annotate)*>
 		<!ATTLIST method
 				%lang;
 				name CDATA #REQUIRED

@@ -37,7 +37,7 @@
             <xs:element type="constType" name="const" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element type="decoratesType" name="decorates" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element type="docType" name="doc" minOccurs="0" maxOccurs="1"/>
-            <xs:element type="anotateType" name="anotate" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element type="annotateType" name="annotate" minOccurs="0" maxOccurs="unbounded"/>
             <xs:any minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:group>
@@ -69,7 +69,7 @@
 
     <xs:complexType name="propertyType">
         <xs:sequence>
-            <xs:element type="anotateType" name="anotate" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element type="annotateType" name="annotate" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element type="docType" name="doc" minOccurs="0" maxOccurs="1"/>
         </xs:sequence>
         <xs:attribute type="xs:string" name="name" use="required"/>
@@ -90,7 +90,7 @@
     <xs:complexType name="methodType">
         <xs:sequence>
             <xs:element type="docType" name="doc" minOccurs="0" maxOccurs="1"/>
-            <xs:element type="anotateType" name="anotate" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element type="annotateType" name="annotate" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element type="param-type" name="param" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
         <xs:attribute type="type-type" name="returns" use="required"/>
@@ -108,7 +108,7 @@
         </xs:simpleContent>
     </xs:complexType>
 
-    <xs:complexType name="anotateType">
+    <xs:complexType name="annotateType">
         <xs:simpleContent>
             <xs:extension base="xs:string">
                 <xs:attribute type="xs:string" name="lang" default="*"/>

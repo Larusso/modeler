@@ -209,6 +209,7 @@
     (contains? map :type )
     (contains? map :docs? )
     (contains? map :doc )
+    (contains? map :annotations )
     )
   )
 
@@ -273,6 +274,7 @@
     (contains? map :type )
     (contains? map :docs? )
     (contains? map :doc )
+    (contains? map :annotations )
     )
   )
 
@@ -349,6 +351,7 @@
     (contains? map :returns )
     (contains? map :docs? )
     (contains? map :doc )
+    (contains? map :annotations )
     )
   )
 
@@ -423,6 +426,7 @@
     (contains? item :methods? )
     (contains? item :docs? )
     (contains? item :doc )
+    (contains? item :annotations )
     )
   )
 
@@ -595,12 +599,11 @@
             property (first (filterTag :property (:content simpleClass)))
             method (first (filterTag :method (:content simpleClass)))]
         (is (not (nil? (get-documentation simpleClass))))
-        (is (vector? (get-documentation simpleClass)))
+        (is (seq? (get-documentation simpleClass)))
         (is (= ["Helper class to create great stuff."] (get-documentation simpleClass)))
         (is (not (nil? (get-documentation property))))
         (is (not (nil? (get-documentation method))))
         (is (= 2 (count (get-documentation method))))
-        (println (get-documentation method))
         )
       )
     )
@@ -611,13 +614,88 @@
             property (first (filterTag :property (:content simpleClass)))
             method (first (filterTag :method (:content simpleClass)))]
         (is (not (nil? (get-documentation simpleClass))))
-        (is (vector? (get-documentation simpleClass)))
+        (is (seq? (get-documentation simpleClass)))
         (is (nil? (get-documentation property)))
         (is (nil? (get-documentation method)))
         )
       )
     )
   )
+
+(deftest test-get-annotations
+  (testing "get annotations in class lang as3"
+    (binding [*model* (get-struct-map (slurp "test-resources/model/annotation/model.xml")) *lang* "as3"]
+      (let [simpleClass (get-class-by-name *model* "SimpleClass")
+            property (first (filterTag :property (:content simpleClass)))
+            method (first (filterTag :method (:content simpleClass)))]
+        (is (not (nil? (get-annotations simpleClass))))
+        (is (= 2 (count (get-annotations simpleClass))))
+
+        (is (not (nil? (get-annotations method))))
+        (is (= 1 (count (get-annotations method))))
+
+        (is (not (nil? (get-annotations property))))
+        (is (= 1 (count (get-annotations property))))
+        )
+      )
+    )
+
+  (testing "get annotations in iface lang as3"
+    (binding [*model* (get-struct-map (slurp "test-resources/model/annotation/model.xml")) *lang* "as3"]
+      (let [simpleClass (get-iface-by-name *model* "ISimpleInterface")
+            property (first (filterTag :property (:content simpleClass)))
+            method (first (filterTag :method (:content simpleClass)))]
+        (is (not (nil? (get-annotations simpleClass))))
+        (is (= 2 (count (get-annotations simpleClass))))
+
+        (is (not (nil? (get-annotations method))))
+        (is (= 1 (count (get-annotations method))))
+
+        (is (not (nil? (get-annotations property))))
+        (is (= 1 (count (get-annotations property))))
+        )
+      )
+    )
+
+  (testing "get annotations in iface lang as3"
+    (binding [*model* (get-struct-map (slurp "test-resources/model/annotation/model.xml")) *lang* "java"]
+      (let [simpleClass (get-iface-by-name *model* "ISimpleInterface")
+            property (first (filterTag :property (:content simpleClass)))
+            method (first (filterTag :method (:content simpleClass)))]
+        (is (not (nil? (get-annotations simpleClass))))
+        (is (= 1 (count (get-annotations simpleClass))))
+
+        (is (not (nil? (get-annotations method))))
+        (is (= 0 (count (get-annotations method))))
+
+        (is (not (nil? (get-annotations property))))
+        (is (= 0 (count (get-annotations property))))
+        )
+      )
+    )
+
+  (testing "get annotations in class lang java"
+    (binding [*model* (get-struct-map (slurp "test-resources/model/annotation/model.xml")) *lang* "java"]
+      (let [simpleClass (get-class-by-name *model* "SimpleClass")
+            property (first (filterTag :property (:content simpleClass)))
+            method (first (filterTag :method (:content simpleClass)))]
+        (is (not (nil? (get-annotations simpleClass))))
+        (is (= 1 (count (get-annotations simpleClass))))
+
+        (is (not (nil? (get-annotations method))))
+        (is (= 0 (count (get-annotations method))))
+
+        (is (not (nil? (get-annotations property))))
+        (is (= 0 (count (get-annotations property))))
+        )
+      )
+    )
+  )
+
+;;/////////////////////////////////////////
+;;  test annotations
+;;////////////////////////////////////////
+
 
 (deftest filterTagTest
   (testing "filter tag lang as3"
