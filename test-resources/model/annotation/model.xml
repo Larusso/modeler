@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE model SYSTEM "http://www.modeler.tslarusso.de/generator.dtd">
+<model xmlns="http://www.modeler.tslarusso.de/modelerSchema"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.modeler.tslarusso.de/modeler.xsd">
+
+    <iface type="ISimpleInterface">
+        <annotate lang="as3"><![CDATA[[Include(type="lala")]]></annotate>
+        <annotate><![CDATA[[Test Test]]></annotate>
+        <property name="name" type="String">
+            <annotate lang="as3"><![CDATA[[RemoteClass]]></annotate>
+        </property>
+        <method returns="String" name="getName">
+            <annotate lang="as3"><![CDATA[[Depricated]]></annotate>
+            <param name="type" type="int"/>
+            <param name="inst" type="Object"/>
+        </method>
+    </iface>
+
+    <class type="SimpleClass">
+        <annotate lang="as3"><![CDATA[[RemoteClass]]></annotate>
+        <annotate lang="as3"><![CDATA[[SpecialClass]]></annotate>
+        <annotate lang="java"><![CDATA[[@override]]></annotate>
+
+        <property name="name" type="String">
+            <annotate lang="as3"><![CDATA[[RemoteClass]]></annotate>
+        </property>
+        <method returns="String" name="getName">
+            <annotate lang="as3"><![CDATA[[Depricated]]></annotate>
+            <param name="type" type="int"/>
+            <param name="inst" type="Object"/>
+        </method>
+    </class>
+
+</model>

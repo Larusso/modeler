@@ -4,59 +4,63 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.modeler.tslarusso.de/modeler.xsd">
 
-	<iface type="de.example.interfaces.Interface1">
-		<property name="name" type="String">
-			<doc><![CDATA[returns instance name]]></doc>
-		</property>
-		<property name="type" type="int">
-			<doc><![CDATA[returns instance type
+    <iface type="de.example.interfaces.Interface1">
+        <annotate><![CDATA[[Bindable]]]></annotate>
+        <property name="name" type="String">
+            <doc><![CDATA[returns instance name]]></doc>
+        </property>
+        <property name="type" type="int">
+            <annotate><![CDATA[[Bindable]]]></annotate>
+            <doc><![CDATA[returns instance type
 				1 = model
 				2 = controller]]></doc>
-		</property>
-		<method returns="String" name="getName">
-			<param name="type" type="int"/>
-			<param name="inst" type="Object"/>
-		</method>
-	</iface>
+        </property>
+        <method returns="String" name="getName">
+            <annotate><![CDATA[[Bindable]]]></annotate>
+            <param name="type" type="int"/>
+            <param name="inst" type="Object"/>
+        </method>
+    </iface>
 
-	<iface type="de.example.interfaces.Interface2">
-		<extends type="de.example.interfaces.Interface3"/>
-		<property name="uid" type="String"/>
-	</iface>
+    <iface type="de.example.interfaces.Interface2">
+        <extends type="de.example.interfaces.Interface3"/>
+        <property name="uid" type="String"/>
+    </iface>
 
-	<iface type="de.example.interfaces.Interface3">
-		<property name="uid" type="String"/>
-		<property name="uidSpecial" type="String"/>
-	</iface>
+    <iface type="de.example.interfaces.Interface3">
+        <property name="uid" type="String"/>
+        <property name="uidSpecial" type="String"/>
+    </iface>
 
-	<class type="de.example.model.Class1">
-		<const name="SERVER_URI" type="String">de.example.uri</const>
-		<const name="SERVER_URL" type="String">http://www.example.de/uri</const>
-		<implements iface="de.example.interfaces.Interface1"/>
-		<implements iface="de.example.interfaces.Interface2"/>
-	</class>
+    <class type="de.example.model.Class1">
+        <annotate><![CDATA[[Bindable]]]></annotate>
+        <const name="SERVER_URI" type="String">de.example.uri</const>
+        <const name="SERVER_URL" type="String">http://www.example.de/uri</const>
+        <implements iface="de.example.interfaces.Interface1"/>
+        <implements iface="de.example.interfaces.Interface2"/>
+    </class>
 
-	<class type="de.example.model.Class2">
-		<extends type="de.example.model.Class1"/>
-		<implements iface="de.example.interfaces.Interface1"/>
-	</class>
+    <class type="de.example.model.Class2">
+        <extends type="de.example.model.Class1"/>
+        <implements iface="de.example.interfaces.Interface1"/>
+    </class>
 
-	<class type="de.example.model.Class3">
-		<decorates name="decoratee" type="de.example.model.Class1"/>
-		<implements iface="de.example.interfaces.Interface1"/>
-	</class>
+    <class type="de.example.model.Class3">
+        <decorates name="decoratee" type="de.example.model.Class1"/>
+        <implements iface="de.example.interfaces.Interface1"/>
+    </class>
 
-	<class type="de.example.model.Class4">
-		<decorates name="decoratee" type="de.example.model.Class3"/>
-	</class>
+    <class type="de.example.model.Class4">
+        <decorates name="decoratee" type="de.example.model.Class3"/>
+    </class>
 
-	<class type="de.example.model.Class5">
-		<decorates prefix="a_" name="decorateeA" type="de.example.model.Class4"/>
-		<decorates prefix="b_" name="decorateeB" type="de.example.model.Class4"/>
-	</class>
+    <class type="de.example.model.Class5">
+        <decorates prefix="a_" name="decorateeA" type="de.example.model.Class4"/>
+        <decorates prefix="b_" name="decorateeB" type="de.example.model.Class4"/>
+    </class>
 
-	<class type="de.example.model.Class6">
-		<property name="uniqeName" type="String"/>
-	</class>
+    <class type="de.example.model.Class6">
+        <property name="uniqeName" type="String"/>
+    </class>
 
 </model>
