@@ -4,9 +4,11 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.modeler.tslarusso.de/modeler.xsd">
 
-	<class type="ConstClass">
-		<const name="const1" type="string">CONST_1</const>
-		<const name="const2" type="int">42</const>
-		<const name="const3" type="boolean">false</const>
-	</class>
+    <class type="ConstClass">
+        <const name="const1" type="string" lang="as3">CONST_1</const>
+        <const name="const2" type="int">42</const>
+        <const name="const3" type="boolean">false</const>
+        <const name="const4" type="boolean" lang="java">false</const>
+        <const name="const5" type="boolean" lang="java">false</const>
+    </class>
 </model>

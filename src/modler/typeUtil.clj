@@ -312,8 +312,8 @@
 
 (defn get-consts
   [model]
-  (let [zipped-model (zip/xml-zip model)]
-    (map createConstObject (zf/xml-> zipped-model :const ))
+  (let [lang-value *lang* zipped-model (zip/xml-zip model)]
+    (map createConstObject (zf/xml-> zipped-model :const [(lang-attr= lang-value)]))
     )
   )
 

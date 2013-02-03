@@ -279,7 +279,7 @@
   )
 
 (deftest test-get-consts
-  (testing "get consts"
+  (testing "get consts as3"
     (binding [*model* xmlModel3 *lang* "as3"]
       (let [class (get-class-by-name xmlModel3 "ConstClass")]
 
@@ -288,6 +288,19 @@
         (is (= 3 (count (get-consts class))))
         (is (every? is-const-object (get-consts class)))
         (is (= "CONST_1" (:value (first (get-consts class)))))
+        )
+      )
+    )
+
+  (testing "get consts java"
+    (binding [*model* xmlModel3 *lang* "java"]
+      (let [class (get-class-by-name xmlModel3 "ConstClass")]
+
+        (is (true? (consts? class)))
+        (is (not (nil? (get-consts class))))
+        (is (= 4 (count (get-consts class))))
+        (is (every? is-const-object (get-consts class)))
+        (is (= "42" (:value (first (get-consts class)))))
         )
       )
     )
