@@ -76,11 +76,18 @@
     )
   )
 
+(defn generate?
+  [lang-value]
+  (fn [loc] (and ((zf/attr= :exclude "false") loc) ((typeUtil/lang-attr= lang-value) loc)))
+  )
+
 (defn get-classes
   "returns a list with all the classes in the model"
   ([model lang]
     (binding [typeUtil/*lang* lang typeUtil/*model* model]
-      (doall (map typeUtil/get-class (typeUtil/filterTag :class (:content model))))
+      (let [zipped-model (zip/xml-zip model)]
+        (doall (map #(typeUtil/get-class (first %) ) (zf/xml-> zipped-model :class [(generate? lang)])))
+        )
       )
     )
   ([model]
@@ -92,7 +99,11 @@
   "returns a list with all the interfaces in the model"
   ([model lang]
     (binding [typeUtil/*lang* lang typeUtil/*model* model]
-      (doall (map typeUtil/get-interface (typeUtil/filterTag :iface (:content model))))
+      (let [zipped-model (zip/xml-zip model)]
+        (doall
+          (map #(typeUtil/get-class (first %) ) (zf/xml-> zipped-model :iface [(generate? lang)]))
+          )
+        )
       )
     )
   ([model]
