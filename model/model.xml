@@ -63,4 +63,20 @@
         <property name="uniqeName" type="String"/>
     </class>
 
+    <iface type="flash.display.IBitmapDrawable" exclude="true"></iface>
+
+    <class type="flash.display.MovieClip" exclude="true" lang="as3">
+        <implements iface="flash.display.IBitmapDrawable"/>
+        <property name="currentFrame" type="int"/>
+        <property name="currentFrameLabel" type="String"/>
+    </class>
+
+    <class type="de.example.model.Class6">
+        <extends type="flash.display.MovieClip"/>
+    </class>
+
+    <class type="de.example.model.Class7">
+        <decorates type="flash.display.MovieClip" name="clip"/>
+    </class>
+
 </model>
