@@ -153,6 +153,16 @@
 
       )
     )
+
+  (testing "get classes with exclude classes in model"
+    (let [model (load-model "test-resources/model/exclude/model.xml")
+          classes (get-classes model)]
+      (is (not (nil? classes)))
+      (is (= 4 (count classes)))
+      (is (true? (every? is-class-object? classes)))
+      (is (true? (every? is-base-object? classes)))
+      )
+    )
   )
 
 (deftest test-get-interfaces

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE model SYSTEM "http://www.modeler.tslarusso.de/generator.dtd">
+<model xmlns="http://www.modeler.tslarusso.de/modelerSchema"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.modeler.tslarusso.de/modeler.xsd">
+
+    <class type="de.example.model.Class1"/>
+
+    <class type="de.example.model.Class2" exclude="true"/>
+
+    <class type="de.example.model.Class3" exclude="true"/>
+
+    <class type="de.example.model.Class4"/>
+
+    <class type="de.example.model.Class5"/>
+
+    <class type="de.example.model.Class6"/>
+
+</model>

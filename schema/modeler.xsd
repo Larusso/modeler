@@ -48,6 +48,7 @@
         </xs:sequence>
         <xs:attributeGroup ref="type-lang-attrgroup"/>
         <xs:attribute type="xs:string" name="templateId" use="required"/>
+        <xs:attribute type="xs:boolean" name="exclude" default="false"/>
     </xs:complexType>
 
     <xs:complexType name="ifaceType">
@@ -56,6 +57,7 @@
         </xs:sequence>
         <xs:attributeGroup ref="type-lang-attrgroup"/>
         <xs:attribute type="xs:string" name="templateId" default="iface"/>
+        <xs:attribute type="xs:boolean" name="exclude" default="false"/>
     </xs:complexType>
 
     <xs:complexType name="classType">
@@ -65,6 +67,7 @@
         </xs:sequence>
         <xs:attributeGroup ref="type-lang-attrgroup"/>
         <xs:attribute type="xs:string" name="templateId" default="class"/>
+        <xs:attribute type="xs:boolean" name="exclude" default="false"/>
     </xs:complexType>
 
     <xs:complexType name="propertyType">

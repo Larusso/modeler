@@ -7,19 +7,22 @@
 		<!ATTLIST entity
 				%lang;
 				type CDATA #REQUIRED
-				templateId CDATA #REQUIRED>
+				templateId CDATA #REQUIRED
+                exclude (true|false) "false">
 
 		<!ELEMENT class (implements|property|method|extends|const|decorates|doc|annotate)*>
 		<!ATTLIST class
 				%lang;
 				type CDATA #REQUIRED
-				templateId CDATA "class">
+				templateId CDATA "class"
+                exclude (true|false) "false">
 
 		<!ELEMENT iface (property|method|extends|doc|annotate)*>
 		<!ATTLIST iface
 				%lang;
 				type CDATA #REQUIRED
-				templateId CDATA "iface">
+				templateId CDATA "iface"
+                exclude (true|false) "false">
 
 		<!ELEMENT property (doc|annotate)*>
 		<!ATTLIST property
