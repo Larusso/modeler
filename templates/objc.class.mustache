@@ -1,0 +1,41 @@
+![{:extension "h" :skipNamespaceDirectoryCreation true}]
+@interface {{type-name}} : {{#super-types?}}{{super-types.first.name}}{{/super-types?}}{{^super-types?}}NSObject{{/super-types?}}
+{
+	{{#properties.all}}
+    {{#type}}{{name}}{{/type}} _{{name}};
+    {{/properties.all}}
+}
+{{#properties.all}}
+@property( nonatomic,retain ) {{#type}}{{name}}{{/type}} {{name}};
+{{/properties.all}}
+{{#methods.all}}
+
+//---------------------------------------------
+//  {{name}}
+//---------------------------------------------
+
+- ({{#returns}}{{name}}{{/returns}}){{name}}{{#params}}{{#first}}With:({{#type}}{{name}}{{/type}}){{name}}{{/first}}{{#rest}} :({{#type}}{{name}}{{/type}})and{{name}}{{/rest}}{{/params}};
+
+{{/methods.all}}
+
+@end
+#[FILE_BREAK]
+![{:extension "m" :skipNamespaceDirectoryCreation true}]
+@implementation {{type-name}}
+{{#properties.all}}
+@synthesize {{name}}=_{{name}};
+{{/properties.all}}
+
+{{#methods.all}}
+
+//---------------------------------------------
+//  {{name}}
+//---------------------------------------------
+
+- ({{#returns}}{{name}}{{/returns}}){{name}}{{#params}}{{#first}}With:({{#type}}{{name}}{{/type}}){{name}}{{/first}}{{#rest}} :({{#type}}{{name}}{{/type}})and{{name}}{{/rest}}{{/params}}
+{
+	//
+}
+
+{{/methods.all}}
+@end
