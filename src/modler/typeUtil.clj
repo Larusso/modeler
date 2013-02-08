@@ -425,6 +425,7 @@
      :properties (distinct (concat (get-properties decoratee) (mapcat :properties (get-decorators decoratee))))
      :methods? (or (methods? decoratee) (some :methods? (get-decorators decoratee)) false)
      :methods (distinct (concat (get-methods decoratee) (mapcat :methods (get-decorators decoratee))))
+     :read-only? (= (:readOnly (:attrs decorates-tag)) "true")
      }
     )
   )

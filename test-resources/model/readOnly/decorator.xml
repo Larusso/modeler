@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE model SYSTEM "http://www.modeler.tslarusso.de/generator.dtd">
+<model xmlns="http://www.modeler.tslarusso.de/modelerSchema"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.modeler.tslarusso.de/modeler.xsd">
+
+	<class type="Decoratee">
+		<property name="name" type="String"/>
+		<property name="uuid" type="int"/>
+	</class>
+
+	<class type="Decorator">
+		<decorates name="innertype" type="Decoratee" readOnly="true"/>
+	</class>
+</model>
