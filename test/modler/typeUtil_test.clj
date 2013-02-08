@@ -263,6 +263,17 @@
         )
       )
     )
+
+  (testing "get readonly propertie"
+    (binding [*model* (get-struct-map (slurp "test-resources/model/readOnly/properties.xml")) *lang* "*"]
+      (let [class (get-class-by-name *model* "SimpleClass")
+            properties (get-properties class)]
+        (is (true? (:read-only? (first properties))))
+        (pprint class)
+        (pprint properties)
+        )
+      )
+    )
   )
 
 (defn is-const-object

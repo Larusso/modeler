@@ -256,6 +256,7 @@
     {
       :name (:name (:attrs propertyTag))
       :type (getTypeComponents (:type (:attrs propertyTag)))
+      :read-only? (= "true" (:readOnly (:attrs propertyTag)))
       :doc (get-documentation propertyTag)
       :docs? (not (nil? (get-documentation propertyTag)))
       :annotations (get-annotations propertyTag)
