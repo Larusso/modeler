@@ -85,6 +85,7 @@
 
 	<iface type="de.example.interfaces.Interface9">
 		<property name="saveName" type="String" readOnly="true"/>
+		<property name="uid" type="int"/>
 	</iface>
 
 	<class type="de.example.model.Class9">
@@ -92,6 +93,10 @@
 	</class>
 
 	<class type="de.example.model.Class10">
-		<decorates type="class9" name="de.example.model.Class9"/>
+		<decorates type="de.example.model.Class9" name="class9"/>
+	</class>
+
+	<class type="de.example.model.Class11">
+		<decorates type="de.example.model.Class9" name="class9" readOnly="true"/>
 	</class>
 </model>

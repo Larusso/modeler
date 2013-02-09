@@ -83,7 +83,7 @@ package {{package}}
 		private var {{decorator-name}}:{{#type}}{{name}}{{/type}} = new {{#type}}{{name}}{{/type}}();
 
 		{{#properties}}
-        //---------------------------------------------
+		//---------------------------------------------
         //  decorate {{decorator-prefix}}{{name}}
         //---------------------------------------------
 
@@ -102,11 +102,13 @@ package {{package}}
         {
             return {{decorator-name}}.{{name}};
         }
+
 		{{^read-only?}}
         public function set {{decorator-prefix}}{{name}}(value:{{#type}}{{name}}{{/type}}):void
         {
             {{decorator-name}}.{{name}} = value;
         }
+
 		{{/read-only?}}
         {{/properties}}
 
