@@ -11,4 +11,4 @@ TODOS
 * deploy build artifacts to s3
 * add single file generation
 * override package saving for specific languages in template
-* add readonly properties and decorators
+* ~~add readonly properties and decorators~~
