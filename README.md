@@ -83,6 +83,7 @@ Each template is referenced by its template key and language.
 * __java class template__ java.class.mustache
 * __java iface template__ java.iface.mustache
 
+
 class and face are the default template keys for class and iface model definitions. You can set any template key for your class or iface definition.
 
 **example:**

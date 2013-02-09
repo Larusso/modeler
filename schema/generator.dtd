@@ -28,7 +28,8 @@
 		<!ATTLIST property
 				%lang;
 				name CDATA #REQUIRED
-				type CDATA #REQUIRED>
+				type CDATA #REQUIRED
+                readOnly (true|false) "false">
 
 		<!ELEMENT const (#PCDATA)>
 		<!ATTLIST const
@@ -54,7 +55,8 @@
 				%lang;
 				type CDATA #REQUIRED
 				name CDATA #REQUIRED
-				prefix CDATA "">
+				prefix CDATA ""
+                readOnly (true|false|0|1) "false">
 
 		<!ELEMENT method (param|doc|annotate)*>
 		<!ATTLIST method

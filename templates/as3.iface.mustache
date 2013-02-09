@@ -27,8 +27,9 @@ package {{package}}
         **/
 		function get {{name}}():{{#type}}{{name}}{{/type}};
 
+		{{^read-only?}}
 		function set {{name}}(value:{{#type}}{{name}}{{/type}}):void;
-
+		{{/read-only?}}
         {{/properties.all}}
 
 		{{#methods?}}

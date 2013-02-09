@@ -263,6 +263,15 @@
         )
       )
     )
+
+  (testing "get readonly propertie"
+    (binding [*model* (get-struct-map (slurp "test-resources/model/readOnly/properties.xml")) *lang* "*"]
+      (let [class (get-class-by-name *model* "SimpleClass")
+            properties (get-properties class)]
+        (is (true? (:read-only? (first properties))))
+        )
+      )
+    )
   )
 
 (defn is-const-object
@@ -596,6 +605,24 @@
       (let [class (get-class-by-name *model* "de.example.model.DecoratorClass")
             decorators (get-decorators class)]
         (is (not (empty? decorators)))
+        )
+      )
+    )
+  (testing "decorate class with read only attribute"
+    (binding [*model* (get-struct-map (slurp "test-resources/model/readOnly/decorator.xml")) *lang* "*"]
+      (let [class (get-class-by-name *model* "Decorator")
+            decorators (get-decorators class)]
+        (is (every? #(true? (:read-only? %1)) (:properties (first decorators))))
+        )
+      )
+    )
+
+  (testing "decorate class with read only attribute"
+    (binding [*model* (get-struct-map (slurp "test-resources/model/readOnly/decoratedReadOnlyProperty.xml")) *lang* "*"]
+      (let [class (get-class-by-name *model* "Decorator")
+            decorators (get-decorators class)]
+        (is (false? (:read-only? (first (:properties (first decorators))))))
+        (is (true? (:read-only? (first (rest (:properties (first decorators)))))))
         )
       )
     )
