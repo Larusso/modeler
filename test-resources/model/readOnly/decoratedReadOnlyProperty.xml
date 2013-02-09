@@ -6,6 +6,7 @@
 
 	<class type="Decoratee">
 		<property name="name" type="String" readOnly="true"/>
+		<property name="uuid" type="int"/>
 	</class>
 
 	<class type="Decorator">

@@ -102,12 +102,12 @@ package {{package}}
         {
             return {{decorator-name}}.{{name}};
         }
-
+		{{^read-only?}}
         public function set {{decorator-prefix}}{{name}}(value:{{#type}}{{name}}{{/type}}):void
         {
             {{decorator-name}}.{{name}} = value;
         }
-
+		{{/read-only?}}
         {{/properties}}
 
         {{#methods}}

@@ -91,4 +91,7 @@
 		<implements iface="de.example.interfaces.Interface9"/>
 	</class>
 
+	<class type="de.example.model.Class10">
+		<decorates type="class9" name="de.example.model.Class9"/>
+	</class>
 </model>

@@ -422,10 +422,9 @@
      :decorator-name (:name (:attrs decorates-tag))
      :decorator-prefix (:prefix (:attrs decorates-tag))
      :properties? (or (properties? decoratee) (some :properties? (get-decorators decoratee)) false)
-     :properties (distinct (concat (get-properties decoratee) (mapcat :properties (get-decorators decoratee))))
+     :properties (map #(if (= "true" (:readOnly (:attrs decorates-tag))) (merge %1 {:read-only? true}) %1) (distinct (concat (get-properties decoratee) (mapcat :properties (get-decorators decoratee)))))
      :methods? (or (methods? decoratee) (some :methods? (get-decorators decoratee)) false)
      :methods (distinct (concat (get-methods decoratee) (mapcat :methods (get-decorators decoratee))))
-     :read-only? (= (:readOnly (:attrs decorates-tag)) "true")
      }
     )
   )

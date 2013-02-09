@@ -612,7 +612,7 @@
     (binding [*model* (get-struct-map (slurp "test-resources/model/readOnly/decorator.xml")) *lang* "*"]
       (let [class (get-class-by-name *model* "Decorator")
             decorators (get-decorators class)]
-        (is (true? (:read-only? (first decorators))))
+        (is (every? #(true? (:read-only? %1)) (:properties (first decorators))))
         )
       )
     )
@@ -621,8 +621,8 @@
     (binding [*model* (get-struct-map (slurp "test-resources/model/readOnly/decoratedReadOnlyProperty.xml")) *lang* "*"]
       (let [class (get-class-by-name *model* "Decorator")
             decorators (get-decorators class)]
-        (is (false? (:read-only? (first decorators))))
-        (is (true? (:read-only? (first (:properties (first decorators))))))
+        (is (false? (:read-only? (first (:properties (first decorators))))))
+        (is (true? (:read-only? (first (rest (:properties (first decorators)))))))
         )
       )
     )
